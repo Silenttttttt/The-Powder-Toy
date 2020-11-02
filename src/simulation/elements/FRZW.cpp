@@ -34,7 +34,7 @@ int FRZW_update(UPDATE_FUNC_ARGS)
 	{
 		part_change_type(i,x,y,PT_ICEI);
 		parts[i].ctype=PT_FRZW;
-		parts[i].temp = restrict_flt(parts[i].temp-200.0f, MIN_TEMP, MAX_TEMP);
+		parts[i].temp = restrict_flt(parts[i].temp-200.0f, MIN_TEMP, 10000);
 	}
 	return 0;
 }

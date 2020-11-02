@@ -54,7 +54,7 @@ public:
 	float Diffusion;
 	float HotAir;
 	int Falldown;
-
+	int Oxidizer;
 	int Flammable;
 	int Explosive;
 	int Meltable;

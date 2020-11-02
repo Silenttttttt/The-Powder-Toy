@@ -39,7 +39,7 @@ void SAND_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 5;
 	elem->Hardness = 1;
 
-	elem->Weight = 90;
+	elem->Weight = (int)(1.63 * 20.0);
 
 	elem->HeatConduct = 150;
 	elem->Latent = 0;

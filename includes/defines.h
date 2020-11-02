@@ -61,7 +61,7 @@
 #define STATICSERVER "static.powdertoy.co.uk"
 #endif
 #ifndef UPDATESERVER
-#define UPDATESERVER "starcatcher.us/TPT"
+#define UPDATESERVER "no update"
 #endif
 
 #define LOCAL_SAVE_DIR "Saves"

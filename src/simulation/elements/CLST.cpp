@@ -36,8 +36,8 @@ int CLST_update(UPDATE_FUNC_ARGS)
 				}
 				else if (TYP(r) == PT_NITR)
 				{
-					sim->part_create(i, x, y, PT_BANG);
-					sim->part_create(ID(r), x+rx, y+ry, PT_BANG);
+					sim->part_create(i, x, y, PT_TNT);
+					sim->part_create(ID(r), x+rx, y+ry, PT_TNT);
 				}
 				else if (TYP(r) == PT_CLST)
 				{

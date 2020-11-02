@@ -87,13 +87,13 @@ msvc = GetOption('msvc')
 if msvc and platform != "Windows":
 	FatalError("Error: --msvc only works on windows")
 
-#Create SCons Environment
+#Create SCons EnvFEment
 if GetOption('msvc'):
-	env = Environment(tools=['default'], ENV=os.environ, TARGET_ARCH='x86')
+	env = EnvFEment(tools=['default'], ENV=os.envFE, TARGET_ARCH='x86')
 elif platform == "Windows":
-	env = Environment(tools=['mingw'], ENV=os.environ)
+	env = EnvFEment(tools=['mingw'], ENV=os.envFE)
 else:
-	env = Environment(tools=['default'], ENV=os.environ)
+	env = EnvFEment(tools=['default'], ENV=os.envFE)
 
 #attempt to automatically find cross compiler
 if not tool and compilePlatform == "Linux" and platform == "Windows":
@@ -118,21 +118,21 @@ if tool:
 		env['RC'] = tool+env['RC']
 	env['STRIP'] = tool+'strip'
 	if os.path.isdir("/usr/{0}/bin".format(tool[:-1])):
-		env['ENV']['PATH'] = "/usr/{0}/bin:{1}".format(tool[:-1], os.environ['PATH'])
+		env['ENV']['PATH'] = "/usr/{0}/bin:{1}".format(tool[:-1], os.envFE['PATH'])
 
-#copy environment variables because scons doesn't do this by default
+#copy envFEment variables because scons doesn't do this by default
 for var in ["CC","CXX","LD","LIBPATH","STRIP"]:
-	if var in os.environ:
-		env[var] = os.environ[var]
-		print("copying environment variable {0}={1!r}".format(var,os.environ[var]))
+	if var in os.envFE:
+		env[var] = os.envFE[var]
+		print("copying envFEment variable {0}={1!r}".format(var,os.envFE[var]))
 # variables containing several space separated things
 for var in ["CFLAGS","CCFLAGS","CXXFLAGS","LINKFLAGS","CPPDEFINES","CPPPATH"]:
-	if var in os.environ:
+	if var in os.envFE:
 		if var in env:
-			env[var] += SCons.Util.CLVar(os.environ[var])
+			env[var] += SCons.Util.CLVar(os.envFE[var])
 		else:
-			env[var] = SCons.Util.CLVar(os.environ[var])
-		print("copying environment variable {0}={1!r}".format(var,os.environ[var]))
+			env[var] = SCons.Util.CLVar(os.envFE[var])
+		print("copying envFEment variable {0}={1!r}".format(var,os.envFE[var]))
 
 #Used for intro text / executable name, actual bit flags are only set if the --64bit/--32bit command line args are given
 def add32bitflags(env):

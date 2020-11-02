@@ -29,8 +29,8 @@ unsigned int RNG::gen()
 
 int RNG::between(int lower, int upper)
 {
-	unsigned int r = next();
-	return static_cast<int>(r % (upper - lower + 1)) + lower;
+		unsigned int r = next();
+		return static_cast<int>(r % (upper - lower + 1)) + lower;
 }
 
 bool RNG::chance(int nominator, unsigned int denominator)

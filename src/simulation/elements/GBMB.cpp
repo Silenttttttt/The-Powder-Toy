@@ -34,9 +34,9 @@ int GBMB_update(UPDATE_FUNC_ARGS)
 			}
 	}
 	if (parts[i].life > 20)
-		sim->grav->gravmap[(y/CELL)*(XRES/CELL)+(x/CELL)] = 20;
+		sim->grav->gravmap[(y/CELL)*(XRES/CELL)+(x/CELL)] = 2000;
 	else if (parts[i].life >= 1)
-		sim->grav->gravmap[(y/CELL)*(XRES/CELL)+(x/CELL)] = -80;
+		sim->grav->gravmap[(y/CELL)*(XRES/CELL)+(x/CELL)] = -800;
 	return 0;
 }
 

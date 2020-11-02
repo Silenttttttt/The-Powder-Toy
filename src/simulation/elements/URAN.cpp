@@ -25,7 +25,7 @@ int URAN_update(UPDATE_FUNC_ARGS)
 		}
 		else
 		{
-			parts[i].temp = restrict_flt((parts[i].temp*(1 + (sim->air->pv[y / CELL][x / CELL] / 2000))) + MIN_TEMP, MIN_TEMP, MAX_TEMP);
+			parts[i].temp = restrict_flt((parts[i].temp*(1 + (sim->air->pv[y / CELL][x / CELL] / 2000))) + MIN_TEMP, MIN_TEMP, 10000);
 		}
 	}
 	return 0;
@@ -61,7 +61,7 @@ void URAN_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->DefaultProperties.temp = R_TEMP + 30.0f + 273.15f;
 	elem->HeatConduct = 251;
 	elem->Latent = 0;
-	elem->Description = "Uranium. Heavy particles. Generates heat under pressure.";
+	elem->Description = "Uranium 238.";
 
 	elem->Properties = TYPE_PART | PROP_RADIOACTIVE;
 

@@ -315,7 +315,7 @@ void Simulation::InitCanMove()
 		for (int destinationType = 1; destinationType < PT_NUM; destinationType++)
 		{
 			// weight check, also prevents particles of same type displacing each other
-			if (elements[movingType].Weight <= elements[destinationType].Weight || destinationType == PT_GEL)
+			if (destinationType != PT_NONE || elements[destinationType].Properties == TYPE_SOLID || elements[movingType].Properties == elements[destinationType].Properties || (elements[movingType].Properties == TYPE_LIQUID && elements[destinationType].Properties == TYPE_PART || elements[movingType].Properties == TYPE_PART && elements[destinationType].Properties == TYPE_GAS || elements[movingType].Properties == TYPE_LIQUID && elements[destinationType].Properties == TYPE_GAS))//elements[movingType].Weight <= elements[destinationType].Weight || destinationType == PT_GEL || destinationType == PT_KNO3 || destinationType == PT_GUNP || destinationType == PT_BCOL)
 				can_move[movingType][destinationType] = 0;
 
 			//other checks for NEUT and energy particles
@@ -557,9 +557,9 @@ unsigned char Simulation::EvalMove(int pt, int nx, int ny, unsigned *rr)
 	}
 	if (bmap[ny/CELL][nx/CELL])
 	{
-		if (bmap[ny/CELL][nx/CELL]==WL_ALLOWGAS && !(elements[pt].Properties&TYPE_GAS))// && elements[pt].Falldown!=0 && pt!=PT_FIRE && pt!=PT_SMKE)
+		if (bmap[ny/CELL][nx/CELL]==WL_ALLOWGAS && !(elements[pt].Properties&TYPE_GAS))// && elements[pt].Falldown!=0 && pt!=PT_FIRE && pt!=PT_N2)
 			return 0;
-		if (bmap[ny/CELL][nx/CELL]==WL_ALLOWENERGY && !(elements[pt].Properties&TYPE_ENERGY))// && elements[pt].Falldown!=0 && pt!=PT_FIRE && pt!=PT_SMKE)
+		if (bmap[ny/CELL][nx/CELL]==WL_ALLOWENERGY && !(elements[pt].Properties&TYPE_ENERGY))// && elements[pt].Falldown!=0 && pt!=PT_FIRE && pt!=PT_N2)
 			return 0;
 		if (bmap[ny/CELL][nx/CELL]==WL_ALLOWLIQUID && elements[pt].Falldown!=2)
 			return 0;
@@ -607,7 +607,7 @@ int Simulation::TryMove(int i, int x, int y, int nx, int ny)
 				parts[ID(r)].temp = parts[i].temp;
 
 			if (TYP(r) < PT_NUM && elements[TYP(r)].HeatConduct && (TYP(r)!=PT_HSWC||parts[ID(r)].life==10) && TYP(r)!=PT_FILT)
-				parts[i].temp = parts[ID(r)].temp = restrict_flt((parts[ID(r)].temp+parts[i].temp)/2, MIN_TEMP, MAX_TEMP);
+				parts[i].temp = parts[ID(r)].temp = restrict_flt((parts[ID(r)].temp+parts[i].temp)/2, MIN_TEMP, 10000);
 		}
 		else if ((parts[i].type==PT_NEUT || parts[i].type==PT_ELEC) && ((elements[TYP(r)].Properties&PROP_CLONE) || (elements[TYP(r)].Properties&PROP_BREAKABLECLONE))) {
 			if (!parts[ID(r)].ctype)
@@ -795,7 +795,7 @@ int Simulation::TryMove(int i, int x, int y, int nx, int ny)
 		part_kill(i);
 		if (!legacy_enable)
 		{
-			parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+parts[i].temp/2, MIN_TEMP, MAX_TEMP);//3.0f;
+			parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+parts[i].temp/2, MIN_TEMP, 10000);//3.0f;
 		}
 		return 0;
 	case PT_WHOL:
@@ -805,7 +805,7 @@ int Simulation::TryMove(int i, int x, int y, int nx, int ny)
 		{
 			if (!legacy_enable)
 			{
-				parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp- (MAX_TEMP-parts[i].temp)/2, MIN_TEMP, MAX_TEMP);
+				parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp- (10000-parts[i].temp)/2, MIN_TEMP, 10000);
 			}
 			part_kill(i);
 			return 0;

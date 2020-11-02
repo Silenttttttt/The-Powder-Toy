@@ -19,6 +19,8 @@ std::vector<StructProperty> particle::properties = {
 	{ "dcolor" , StructProperty::UInteger    , offsetof(particle, dcolour) },
 	{ "pavg0"  , StructProperty::Float       , offsetof(particle, pavg[0]) },
 	{ "pavg1"  , StructProperty::Float       , offsetof(particle, pavg[1]) },
+	{ "containsoxy"   , StructProperty::Integer     , offsetof(particle, containsoxy) },
+	{ "oxidizer"   , StructProperty::Integer     , offsetof(particle, oxidizer) },
 };
 
 std::vector<StructProperty> const &particle::GetProperties()

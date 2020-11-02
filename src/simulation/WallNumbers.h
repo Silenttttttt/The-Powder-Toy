@@ -72,7 +72,7 @@ const wallType wallTypes[] =
 	{"LIQUID WALL",     "DEFAULT_WL_LIQD",  COLPACK(0xC0C0C0), COLPACK(0x101010), 2,  "Allows liquids, blocks all other particles. Conductive."},
 	{"ABSORB WALL",     "DEFAULT_WL_ABSRB", COLPACK(0x808080), COLPACK(0x000000), 1,  "Absorbs particles but lets air currents through."},
 	{"WALL",            "DEFAULT_WL_WALL",  COLPACK(0x808080), COLPACK(0x000000), 3,  "Basic wall, blocks everything."},
-	{"AIRONLY WALL",    "DEFAULT_WL_AIR",   COLPACK(0x3C3C3C), COLPACK(0x000000), 1,  "Allows air, but blocks all particles."},
+	{"AFELY WALL",    "DEFAULT_WL_AIR",   COLPACK(0x3C3C3C), COLPACK(0x000000), 1,  "Allows air, but blocks all particles."},
 	{"POWDER WALL",     "DEFAULT_WL_POWDR", COLPACK(0x575757), COLPACK(0x000000), 1,  "Allows powders, blocks all other particles."},
 	{"CONDUCTOR",       "DEFAULT_WL_CNDTR", COLPACK(0xFFFF22), COLPACK(0x101010), 2,  "Conductor. Allows all particles to pass through and conducts electricity."},
 	{"EHOLE",           "DEFAULT_WL_EHOLE", COLPACK(0x242424), COLPACK(0x101010), 0,  "E-Hole. absorbs particles, releases them when powered."},

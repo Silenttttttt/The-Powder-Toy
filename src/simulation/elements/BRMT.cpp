@@ -15,8 +15,55 @@
 
 #include "simulation/ElementsCommon.h"
 
+
+int COAL_graphics(GRAPHICS_FUNC_ARGS);
+
+
+
 int BRMT_update(UPDATE_FUNC_ARGS)
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	if (abs(parts[i].vx) > 10)
+	{
+		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 2;
+	//	if (parts[i].vx > 0)
+	//	{
+			parts[i].vx /= 2.5;
+		//}
+	//	else 
+	//	{
+
+		//}
+
+	}
+	if (abs(parts[i].vy) > 10)
+	{
+		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 2;
+
+
+		parts[i].vy /= 2.5;
+	}
+
+
+
+
+
+
+
+
 	int r, rx, ry;
 	if (parts[i].temp > 523.15f)//250.0f+273.15f
 	{
@@ -30,6 +77,50 @@ int BRMT_update(UPDATE_FUNC_ARGS)
 					r = pmap[y+ry][x+rx];
 					if (!r)
 						continue;
+
+
+					int rt = TYP(r);
+
+
+
+
+
+
+
+
+
+
+
+
+					if (rt != parts[i].type && abs(parts[i].vx) > 10)
+					{
+						sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vx) / 2;
+						parts[i].vx /= 2.5;
+					}
+					if (rt != parts[i].type && abs(parts[i].vy) > 10)
+					{
+						sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vy) / 2;
+						parts[i].vy /= 2.5;
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 					if (TYP(r) == PT_BREL && RNG::Ref().chance(1, tempFactor))
 					{
 						if(RNG::Ref().chance(1, 2))
@@ -50,7 +141,7 @@ void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_BRMT";
 	elem->Name = "BRMT";
-	elem->Colour = COLPACK(0x705060);
+	elem->Colour = COLPACK(0xa19d94);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_POWDERS;
 	elem->Enabled = 1;
@@ -70,11 +161,11 @@ void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 2;
 	elem->Hardness = 2;
 
-	elem->Weight = 90;
+	elem->Weight = (int)(5 * 20.0);
 
 	elem->HeatConduct = 211;
 	elem->Latent = 0;
-	elem->Description = "Broken metal. Created when iron rusts or when metals break from pressure.";
+	elem->Description = "Broken metal.";
 
 	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_LIFE_DEC|PROP_HOT_GLOW;
 
@@ -88,6 +179,6 @@ void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighTemperatureTransitionElement = ST;
 
 	elem->Update = &BRMT_update;
-	elem->Graphics = NULL;
+	elem->Graphics = &COAL_graphics;
 	elem->Init = &BRMT_init_element;
 }

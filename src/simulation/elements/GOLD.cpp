@@ -20,7 +20,7 @@ int GOLD_update(UPDATE_FUNC_ARGS)
 	int rx, ry, r, j, rndstore;
 	static int checkCoordsX[] = { -4, 4, 0, 0 };
 	static int checkCoordsY[] = { 0, 0, -4, 4 };
-	//Find nearby rusted iron (BMTL with tmp 1+)
+	//Find nearby rusted FE (BMTL with tmp 1+)
 	for (j = 0; j < 8; j++)
 	{
 		rndstore = RNG::Ref().gen();
@@ -35,7 +35,7 @@ int GOLD_update(UPDATE_FUNC_ARGS)
 			if (TYP(r)==PT_BMTL && parts[ID(r)].tmp)
 			{
 				parts[ID(r)].tmp = 0;
-				sim->part_change_type(ID(r), x+rx, y+ry, PT_IRON);
+				sim->part_change_type(ID(r), x+rx, y+ry, PT_FE);
 			}
 		}
 	}
@@ -109,7 +109,7 @@ void GOLD_init_element(ELEMENT_INIT_FUNC_ARGS)
 
 	elem->HeatConduct = 251;
 	elem->Latent = 0;
-	elem->Description = "Corrosion resistant metal, will reverse corrosion of iron.";
+	elem->Description = "Corrosion resistant metal, will reverse corrosion of FE.";
 
 	elem->Properties = TYPE_SOLID|PROP_CONDUCTS|PROP_HOT_GLOW|PROP_LIFE_DEC|PROP_NEUTPASS;
 

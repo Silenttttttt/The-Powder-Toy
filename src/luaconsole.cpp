@@ -225,7 +225,7 @@ typedef struct { int type; int life, ctype; float x, y, vx, vy; float temp; floa
 tpt.parts = ffi.cast(\"particle *\", tpt.partsdata)\n\
 ffi = nil\n\
 tpt.partsdata = nil");
-	//Since ffi is REALLY REALLY dangrous, we'll remove it from the environment completely (TODO)
+	//Since ffi is REALLY REALLY dangrous, we'll remove it from the envFEment completely (TODO)
 	//lua_pushstring(l, "parts");
 	//tptPartsCData = lua_gettable(l, tptProperties);
 #else

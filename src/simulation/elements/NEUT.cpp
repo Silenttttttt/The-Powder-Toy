@@ -64,7 +64,7 @@ int NEUT_update(UPDATE_FUNC_ARGS)
 						if (RNG::Ref().chance(1, 3))
 						{
 							sim->part_create(ID(r), x+rx, y+ry, RNG::Ref().chance(2, 3) ? PT_LAVA : PT_URAN);
-							parts[ID(r)].temp = MAX_TEMP;
+							parts[ID(r)].temp = 5000;
 							if (parts[ID(r)].type == PT_LAVA)
 							{
 								parts[ID(r)].tmp = 100;
@@ -85,7 +85,7 @@ int NEUT_update(UPDATE_FUNC_ARGS)
 				case PT_DEUT:
 					if (RNG::Ref().chance(pressureFactor + 1 + (parts[ID(r)].life/100), 1000))
 					{
-						DeutExplosion(sim, parts[ID(r)].life, x+rx, y+ry, restrict_flt(parts[ID(r)].temp + parts[ID(r)].life*500.0f, MIN_TEMP, MAX_TEMP), PT_NEUT);
+						DeutExplosion(sim, parts[ID(r)].life, x+rx, y+ry, restrict_flt(parts[ID(r)].temp + parts[ID(r)].life*500.0f, MIN_TEMP, 10000), PT_NEUT);
 						sim->part_kill(ID(r));
 					}
 					break;
@@ -99,7 +99,7 @@ int NEUT_update(UPDATE_FUNC_ARGS)
 						if (parts[ID(r)].life>0)
 						{
 							parts[ID(r)].life --;
-							parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp + parts[ID(r)].life*17.0f, MIN_TEMP, MAX_TEMP);
+							parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp + parts[ID(r)].life*17.0f, MIN_TEMP, 10000);
 							pv[y/CELL][x/CELL] += 6.0f * CFDS;
 						}
 						else

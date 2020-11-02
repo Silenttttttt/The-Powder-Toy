@@ -40,7 +40,6 @@ int PLNT_update(UPDATE_FUNC_ARGS)
 						parts[i].life = 4;
 					}
 					break;
-				case PT_SMKE:
 				case PT_CO2:
 					if (RNG::Ref().chance(1, 50))
 					{

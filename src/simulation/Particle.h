@@ -30,6 +30,8 @@ struct particle
 	int flags;
 	int tmp;
 	int tmp2;
+	int containsoxy;
+	int oxidizer;
 	ARGBColour dcolour;
 
 	/** Returns a list of properties, their type and offset within the structure that can be changed

@@ -1336,7 +1336,7 @@ void Simulation::UpdateBefore()
 							if (pmap_count[y][x] > NPART)
 							{
 								part_create(i, x, y, PT_NBHL);
-								parts[i].temp = MAX_TEMP;
+								parts[i].temp = 10000;
 								parts[i].tmp = pmap_count[y][x] - NPART;//strength of grav field
 								if (parts[i].tmp > 51200)
 									parts[i].tmp = 51200;
@@ -1496,7 +1496,7 @@ bool Simulation::UpdateParticle(int i)
 		   (bmap[y/CELL][x/CELL] == WL_DESTROYALL) ||
 		   (bmap[y/CELL][x/CELL] == WL_ALLOWLIQUID && !(elements[t].Properties&TYPE_LIQUID)) ||
 		   (bmap[y/CELL][x/CELL] == WL_ALLOWPOWDER && !(elements[t].Properties&TYPE_PART)) ||
-		   (bmap[y/CELL][x/CELL] == WL_ALLOWGAS && !(elements[t].Properties&TYPE_GAS)) || //&&  elements[t].Falldown!=0 && t!=PT_FIRE && t!=PT_SMKE && t!=PT_HFLM) ||
+		   (bmap[y/CELL][x/CELL] == WL_ALLOWGAS && !(elements[t].Properties&TYPE_GAS)) || //&&  elements[t].Falldown!=0 && t!=PT_FIRE && t!=PT_N2 && t!=PT_HFLM) ||
 		   (bmap[y/CELL][x/CELL] == WL_ALLOWENERGY && !(elements[t].Properties&TYPE_ENERGY)) ||
 		   (bmap[y/CELL][x/CELL] == WL_DETECT && (t==PT_METL || t==PT_SPRK)) ||
 		   (bmap[y/CELL][x/CELL] == WL_EWALL && !emap[y/CELL][x/CELL])
@@ -2474,7 +2474,7 @@ void Simulation::spark_conductive(int i, int x, int y)
 		parts[i].life = 5;
 	else
 		parts[i].life = 4;
-	if (parts[i].temp < 673.0f && !legacy_enable && (type==PT_METL || type == PT_BMTL || type == PT_BRMT || type == PT_PSCN || type == PT_NSCN || type == PT_ETRD || type == PT_NBLE || type == PT_IRON))
+	if (parts[i].temp < 673.0f && !legacy_enable && (type==PT_METL || type == PT_BMTL || type == PT_BRMT || type == PT_PSCN || type == PT_NSCN || type == PT_ETRD || type == PT_NBLE || type == PT_FE))
 	{
 		parts[i].temp = parts[i].temp+10.0f;
 		if (parts[i].temp > 673.0f)
@@ -3041,12 +3041,12 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 	}
 	else if (tool == TOOL_AIR)
 	{
-		air->pv[y/CELL][x/CELL] += strength*.05f;
+		air->pv[y/CELL][x/CELL] += strength*.10f;
 		return -1;
 	}
 	else if (tool == TOOL_VAC)
 	{
-		air->pv[y/CELL][x/CELL] -= strength*.05f;
+		air->pv[y/CELL][x/CELL] -= strength*.10f;
 		return -1;
 	}
 	else if (tool == TOOL_PGRV)
@@ -3068,7 +3068,7 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 		if (RNG::Ref().chance(1, 100))
 			return 0;
 
-		int distance = (int)(std::pow(strength, .5f) * 10);
+		int distance = (int)(std::pow(strength, .10f) * 10);
 
 		if (!(elements[TYP(thisPart)].Properties & (TYPE_PART | TYPE_LIQUID | TYPE_GAS)))
 			return 0;

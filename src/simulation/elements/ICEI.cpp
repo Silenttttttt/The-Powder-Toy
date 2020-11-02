@@ -20,7 +20,7 @@ int ICE_update(UPDATE_FUNC_ARGS)
 	int r, rx, ry;
 	if (parts[i].ctype == PT_FRZW)//get colder if it is from FRZW
 	{
-		parts[i].temp = restrict_flt(parts[i].temp-1.0f, MIN_TEMP, MAX_TEMP);
+		parts[i].temp = restrict_flt(parts[i].temp-1.0f, MIN_TEMP, 10000);
 	}
 	for (rx=-1; rx<2; rx++)
 		for (ry=-1; ry<2; ry++)

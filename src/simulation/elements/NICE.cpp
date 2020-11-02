@@ -55,7 +55,7 @@ void NICE_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = 63.1f;
-	elem->HighTemperatureTransitionElement = PT_LNTG;
+	elem->HighTemperatureTransitionElement = PT_LN2;
 
 	elem->Update = NULL;
 	elem->Graphics = NULL;

@@ -152,7 +152,7 @@ public:
 	// Use part_create and part_kill instead.
 	int part_alloc()
 	{
-		if (pfree == -1)
+		if (pfree <= -1)
 			return -1;
 		int i = pfree;
 		pfree = parts[i].life;

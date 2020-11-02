@@ -27,7 +27,7 @@ public:
 	DeltaTempGenerator(int n, float p, float tempStep) :
 		stepSize(tempStep),
 		// hardcoded limit of 10, to avoid massive lag if someone adds a few zeroes to MAX_TEMP
-		maxStepCount((MAX_TEMP/stepSize < 10) ? ((unsigned int)(MAX_TEMP/stepSize)+1) : 10),
+		maxStepCount((10000 /stepSize < 10) ? ((unsigned int)(10000 /stepSize)+1) : 10),
 		binom(n, p, maxStepCount)
 	{}
 	float getDelta(float randFloat)
@@ -37,7 +37,7 @@ public:
 	}
 	void apply(Simulation *sim, particle &p)
 	{
-		p.temp = restrict_flt(p.temp+getDelta(RNG::Ref().uniform01()), MIN_TEMP, MAX_TEMP);
+		p.temp = restrict_flt(p.temp+getDelta(RNG::Ref().uniform01()), MIN_TEMP, 10000);
 	}
 };
 
@@ -124,7 +124,7 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 									if (RNG::Ref().uniform01() < prob_breakMETLMore)
 									{
 										sim->part_change_type(n, rx+nx, ry+ny, PT_BRMT);
-										parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, MAX_TEMP);
+										parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 									}
 								}
 								break;
@@ -133,19 +133,19 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 								if (RNG::Ref().uniform01() < prob_breakBMTL)
 								{
 									sim->part_change_type(n, rx+nx, ry+ny, PT_BRMT);
-									parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, MAX_TEMP);
+									parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 								}
 								break;
 							case PT_WIFI:
 								if (RNG::Ref().uniform01() < prob_randWIFI)
 								{
 									// Randomize channel
-									parts[n].temp = RNG::Ref().between(0, MAX_TEMP);
+									parts[n].temp = RNG::Ref().between(0, 10000);
 								}
 								if (RNG::Ref().uniform01() < prob_breakWIFI)
 								{
 									sim->part_create(n, rx+nx, ry+ny, PT_BREL);
-									parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, MAX_TEMP);
+									parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 								}
 								continue;
 							default:
@@ -163,7 +163,7 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 							if (RNG::Ref().uniform01() < prob_breakARAY)
 							{
 								sim->part_create(n, rx+nx, ry+ny, PT_BREL);
-								parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, MAX_TEMP);
+								parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 							}
 							break;
 						case PT_DLAY:

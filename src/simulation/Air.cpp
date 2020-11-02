@@ -334,20 +334,20 @@ void Air::UpdateAir()
 			}
 
 			// pressure/velocity caps
-			if (dp > 256.0f)
-				dp = 256.0f;
-			else if (dp < -256.0f)
-				dp = -256.0f;
+			if (dp > 16384.0f)
+				dp = 16384.0f;
+			else if (dp < -16384.0f)
+				dp = -16384.0f;
 
-			if (dx > 256.0f)
-				dx = 256.0f;
-			else if (dx < -256.0f)
-				dx = -256.0f;
+			if (dx > 16384.0f)
+				dx = 16384.0f;
+			else if (dx < -16384.0f)
+				dx = -16384.0f;
 
-			if (dy > 256.0f)
-				dy = 256.0f;
-			else if (dy < -256.0f)
-				dy = -256.0f;
+			if (dy > 16384.0f)
+				dy = 16384.0f;
+			else if (dy < -16384.0f)
+				dy = -16384.0f;
 
 			switch (airMode)
 			{

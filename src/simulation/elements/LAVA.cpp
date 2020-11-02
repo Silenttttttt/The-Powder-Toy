@@ -19,16 +19,16 @@ int FIRE_update(UPDATE_FUNC_ARGS);
 
 int LAVA_graphics(GRAPHICS_FUNC_ARGS)
 {
-	*colr = cpart->life * 2 + 0xE0;
-	*colg = cpart->life * 1 + 0x50;
-	*colb = cpart->life / 2 + 0x10;
+	*colr = cpart->temp / 2;
+	*colg = cpart->temp / 2;
+	*colb = cpart->temp / 2;
 	if (*colr>255) *colr = 255;
 	if (*colg>192) *colg = 192;
 	if (*colb>128) *colb = 128;
-	*firea = 40;
-	*firer = *colr;
-	*fireg = *colg;
-	*fireb = *colb;
+	*firea = (cpart->temp / 1000);
+	*firer = (cpart->temp / 70000)+ *colr;
+	*fireg = (cpart->temp / 5000)+ *colg;
+	*fireb = (cpart->temp / 1000)+ *colb;
 	*pixel_mode |= FIRE_ADD;
 	*pixel_mode |= PMODE_BLUR;
 	//Returning 0 means dynamic, do not cache
@@ -36,8 +36,15 @@ int LAVA_graphics(GRAPHICS_FUNC_ARGS)
 }
 
 void LAVA_create(ELEMENT_CREATE_FUNC_ARGS)
-{
-	sim->parts[i].life = RNG::Ref().between(240, 359);
+{		
+
+
+	if (parts[i].ctype == PT_NONE)
+	{
+		parts[i].life = RNG::Ref().between(240, 359);
+		parts[i].temp = R_TEMP + 1500.0f + 273.15f;
+
+	}
 }
 
 void LAVA_init_element(ELEMENT_INIT_FUNC_ARGS)
@@ -65,12 +72,12 @@ void LAVA_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Hardness = 2;
 	elem->PhotonReflectWavelengths = 0x3FF00000;
 
-	elem->Weight = 45;
+	elem->Weight = (int)(3.1 * 20);
 
-	elem->DefaultProperties.temp = R_TEMP + 1500.0f + 273.15f;
+	elem->DefaultProperties.temp = R_TEMP + 273.15f;
 	elem->HeatConduct = 60;
 	elem->Latent = 0;
-	elem->Description = "Molten lava. Ignites flammable materials. Generated when metals and other materials melt, solidifies when cold.";
+	elem->Description = "Molten lava.";
 
 	elem->Properties = TYPE_LIQUID|PROP_LIFE_DEC;
 

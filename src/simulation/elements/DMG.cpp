@@ -48,7 +48,7 @@ int DMG_update(UPDATE_FUNC_ARGS)
 
 										sim->air->vx[(y+nxj)/CELL][(x+nxi)/CELL] += fx;
 										sim->air->vy[(y+nxj)/CELL][(x+nxi)/CELL] += fy;
-										sim->air->pv[(y+nxj)/CELL][(x+nxi)/CELL] += 1.0f;
+										sim->air->pv[(y+nxj)/CELL][(x+nxi)/CELL] += 5.0f;
 										
 										int t = TYP(rr);
 										if (t && sim->elements[t].HighPressureTransitionThreshold>-1 && sim->elements[t].HighPressureTransitionThreshold<PT_NUM)

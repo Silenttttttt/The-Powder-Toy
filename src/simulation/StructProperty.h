@@ -26,7 +26,7 @@ struct StructProperty
 	PropertyType Type = Char;
 	intptr_t Offset = 0;
 
-	StructProperty(std::string name, PropertyType type, intptr_t offset):
+	 StructProperty(std::string name, PropertyType type, intptr_t offset):
 		Name(std::move(name)),
 		Type(type),
 		Offset(offset)

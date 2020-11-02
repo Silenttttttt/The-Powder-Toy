@@ -18,6 +18,20 @@
 int CO2_update(UPDATE_FUNC_ARGS)
 {
 	int r, rx, ry;
+	float limit = parts[i].temp / 20;
+	if (sim->air->pv[y / CELL][x / CELL] < limit)
+		sim->air->pv[y / CELL][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL]);
+	if (sim->air->pv[y / CELL + 1][x / CELL] < limit)
+		sim->air->pv[y / CELL + 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL]);
+	if (sim->air->pv[y / CELL - 1][x / CELL] < limit)
+		sim->air->pv[y / CELL - 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL]);
+
+	sim->air->pv[y / CELL][x / CELL + 1] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL + 1]);
+	sim->air->pv[y / CELL + 1][x / CELL + 1] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL + 1]);
+	sim->air->pv[y / CELL][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL - 1]);
+	sim->air->pv[y / CELL - 1][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL - 1]);
+
+
 	for (rx=-1; rx<2; rx++)
 		for (ry=-1; ry<2; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
@@ -25,26 +39,15 @@ int CO2_update(UPDATE_FUNC_ARGS)
 				r = pmap[y+ry][x+rx];
 				if (!r)
 				{
-					if (parts[i].ctype==5 && RNG::Ref().chance(1, 2000))
-					{
-						if (sim->part_create(-1, x+rx, y+ry, PT_WATR)>=0)
-							parts[i].ctype = 0;
-					}
 					continue;
 				}
-				if (TYP(r)==PT_FIRE)
+
+
+
+				if ((TYP(r) == PT_WATR || TYP(r) == PT_DSTW) && RNG::Ref().chance(1, 50))
 				{
-					sim->part_kill(ID(r));
-					if(RNG::Ref().chance(1, 30))
-					{
-						sim->part_kill(i);
-						return 1;
-					}
-				}
-				else if ((TYP(r)==PT_WATR || TYP(r)==PT_DSTW) && RNG::Ref().chance(1, 50))
-				{
-					part_change_type(ID(r), x+rx, y+ry, PT_CBNW);
-					if (parts[i].ctype==5) //conserve number of water particles - ctype=5 means this CO2 hasn't released the water particle from BUBW yet
+					part_change_type(ID(r), x + rx, y + ry, PT_CBNW);
+					if (parts[i].ctype == 5) //conserve number of water particles - ctype=5 means this CO2 hasn't released the water particle from BUBW yet
 					{
 						sim->part_create(i, x, y, PT_WATR);
 						return 0;
@@ -54,7 +57,25 @@ int CO2_update(UPDATE_FUNC_ARGS)
 						sim->part_kill(i);
 						return 1;
 					}
+
+
+
+
+
+
+
 				}
+				//if (TYP(r)==PT_FIRE)
+				//{
+				//	sim->part_kill(ID(r));
+				//	if(RNG::Ref().chance(1, 30))
+				//	{
+				//		sim->part_kill(i);
+				//		return 1;
+				//	}
+				//}
+				
+				
 			}
 	if (parts[i].temp > 9773.15 && sim->air->pv[y/CELL][x/CELL] > 200.0f)
 	{
@@ -64,16 +85,16 @@ int CO2_update(UPDATE_FUNC_ARGS)
 			sim->part_create(i,x,y,PT_O2);
 
 			j = sim->part_create(-3,x,y,PT_NEUT);
-			if (j != -1)
-				parts[j].temp = MAX_TEMP;
+			//if (j != -1)
+		//		parts[j].temp = MAX_TEMP;
 			if (RNG::Ref().chance(1, 50))
 			{
 				j = sim->part_create(-3,x,y,PT_ELEC);
-				if (j != -1)
-					parts[j].temp = MAX_TEMP;
+				//if (j != -1)
+	//				parts[j].temp = MAX_TEMP;
 			}
 
-			parts[i].temp = MAX_TEMP;
+		//	parts[i].temp = MAX_TEMP;
 			sim->air->pv[y/CELL][x/CELL] += 100;
 		}
 	}

@@ -117,7 +117,7 @@ int SPRK_update(UPDATE_FUNC_ARGS)
 			}
 		}
 		break;
-	case PT_IRON:
+	case PT_FE:
 		for (rx=-1; rx<2; rx++)
 		for (ry=-1; ry<2; ry++)
 		if (BOUNDS_CHECK && (rx || ry))

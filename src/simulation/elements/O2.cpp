@@ -17,7 +17,7 @@
 
 int O2_update(UPDATE_FUNC_ARGS)
 {
-	int r,rx,ry;
+/*	int r,rx,ry;
 	for (rx=-2; rx<3; rx++)
 		for (ry=-2; ry<3; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
@@ -87,13 +87,28 @@ int O2_update(UPDATE_FUNC_ARGS)
 			}
 		}
 	}
+	*/
+	if (parts[i].life <= 0)
+	{
+		sim->part_change_type(i, x, y, PT_NONE);
+		return 1;
+	}
+
 	return 0;
 }
+
+void O2_create(ELEMENT_CREATE_FUNC_ARGS)
+{
+	parts[i].life = RNG::Ref().between(200, 300);
+	parts[i].containsoxy = 2;
+	parts[i].oxidizer = 1;
+}
+
 
 void O2_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_O2";
-	elem->Name = "OXYG";
+	elem->Name = "O2";
 	elem->Colour = COLPACK(0x80A0FF);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_GAS;
@@ -114,11 +129,11 @@ void O2_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 0;
 	elem->Hardness = 0;
 
-	elem->Weight = 1;
+	elem->Weight = (int)(1.4 * 20);
 
 	elem->HeatConduct = 70;
 	elem->Latent = 0;
-	elem->Description = "Oxygen gas. Ignites easily.";
+	elem->Description = "Oxygen.";
 
 	elem->Properties = TYPE_GAS;
 
@@ -132,6 +147,7 @@ void O2_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighTemperatureTransitionElement = NT;
 
 	elem->Update = &O2_update;
+	elem->Func_Create = &O2_create;
 	elem->Graphics = NULL;
 	elem->Init = &O2_init_element;
 }

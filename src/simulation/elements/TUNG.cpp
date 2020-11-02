@@ -17,6 +17,40 @@
 
 int TUNG_update(UPDATE_FUNC_ARGS)
 {
+
+	if (sim->air->pv[y / CELL][x / CELL] > 100 || sim->air->pv[y / CELL][x / CELL] < -100)//diff > 0.50f || diff < -0.50f)
+	{
+		part_change_type(i, x, y, PT_BRMT);
+		parts[i].ctype = PT_TUNG;
+		return 1;
+	}
+	int tungst = 0;
+	if (nt <= 2)
+		tungst = 2;
+	else if (parts[i].tmp)
+		tungst = 2;
+	else if (nt <= 6)
+		for (int nx = -2; nx <= 2; nx++)
+		{
+			for (int ny = -2; ny <= 2; ny++)
+			{
+				if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
+				{
+					if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
+						tungst++;
+				}
+			}
+		}
+
+	if (tungst >= 4)
+	{
+		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
+	}
+	return 0;
+
+
+
 	const float MELTING_POINT = sim->elements[PT_TUNG].HighTemperatureTransitionThreshold;
 	bool splode = false;
 	if(parts[i].temp > 2400.0)
@@ -33,41 +67,10 @@ int TUNG_update(UPDATE_FUNC_ARGS)
 					}
 				}
 	}
-	if((parts[i].temp > MELTING_POINT && RNG::Ref().chance(1, 20)) || splode)
-	{
-		if (RNG::Ref().chance(1, 50))
-		{
-			sim->air->pv[y/CELL][x/CELL] += 50.0f;
-		}
-		else if (RNG::Ref().chance(1, 100))
-		{
-			part_change_type(i, x, y, PT_FIRE);
-			parts[i].life = RNG::Ref().between(0, 499);
-			return 1;
-		}
-		else
-		{
-			part_change_type(i, x, y, PT_LAVA);
-			parts[i].ctype = PT_TUNG;
-			return 1;
-		}
-		if(splode)
-		{
-			parts[i].temp = restrict_flt(MELTING_POINT + RNG::Ref().between(200, 799), MIN_TEMP, MAX_TEMP);
-		}
-		parts[i].vx += RNG::Ref().between(-50, 50);
-		parts[i].vy += RNG::Ref().between(-50, 50);
-		return 1;
-	}
-	parts[i].pavg[0] = parts[i].pavg[1];
-	parts[i].pavg[1] = sim->air->pv[y/CELL][x/CELL];
-	float diff = parts[i].pavg[1] - parts[i].pavg[0];
-	if (diff > 0.50f || diff < -0.50f)
-	{
-		part_change_type(i,x,y,PT_BRMT);
-		parts[i].ctype = PT_TUNG;
-		return 1;
-	}
+	//parts[i].pavg[0] = parts[i].pavg[1];
+//	parts[i].pavg[1] = sim->air->pv[y/CELL][x/CELL];
+	//float diff = parts[i].pavg[1] - parts[i].pavg[0];
+	
 	return 0;
 }
 
@@ -106,7 +109,7 @@ void TUNG_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Name = "TUNG";
 	elem->Colour = COLPACK(0x505050);
 	elem->MenuVisible = 1;
-	elem->MenuSection = SC_ELEC;
+	elem->MenuSection = SC_SOLIDS;
 	elem->Enabled = 1;
 
 	elem->Advection = 0.0f;
@@ -124,7 +127,7 @@ void TUNG_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 1;
 	elem->Hardness = 1;
 
-	elem->Weight = 100;
+	elem->Weight = (int) (19.3 * 20.0);
 
 	elem->HeatConduct = 251;
 	elem->Latent = 0;
@@ -139,7 +142,7 @@ void TUNG_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = 3695.0f; // TUNG melts in its update function instead of in the normal way, but store the threshold here so that it can be changed from Lua
-	elem->HighTemperatureTransitionElement = NT;
+	elem->HighTemperatureTransitionElement = PT_LAVA;
 
 	elem->Update = &TUNG_update;
 	elem->Graphics = &TUNG_graphics;

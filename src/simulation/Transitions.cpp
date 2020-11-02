@@ -124,7 +124,7 @@ bool Simulation::TransferHeat(int i, int t, int surround[8])
 
 		ctemph = ctempl = pt;
 		// change boiling point with pressure
-		if (((elements[t].Properties&TYPE_LIQUID) && IsElementOrNone(elements[t].HighTemperatureTransitionElement) && (elements[elements[t].HighTemperatureTransitionElement].Properties&TYPE_GAS)) || t==PT_LNTG || t==PT_SLTW)
+		if (((elements[t].Properties&TYPE_LIQUID) && IsElementOrNone(elements[t].HighTemperatureTransitionElement) && (elements[elements[t].HighTemperatureTransitionElement].Properties&TYPE_GAS)) || t==PT_LN2 || t==PT_SLTW)
 			ctemph -= 2.0f*air->pv[y/CELL][x/CELL];
 		else if (((elements[t].Properties&TYPE_GAS) && IsElementOrNone(elements[t].LowTemperatureTransitionElement) && (elements[elements[t].LowTemperatureTransitionElement].Properties&TYPE_LIQUID)) || t==PT_WTRV)
 			ctempl -= 2.0f*air->pv[y/CELL][x/CELL];

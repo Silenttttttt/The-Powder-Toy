@@ -15,6 +15,16 @@
 
 #include "simulation/ElementsCommon.h"
 
+
+
+void LO2_create(ELEMENT_CREATE_FUNC_ARGS)
+{
+	parts[i].life = RNG::Ref().between(50, 100);
+	parts[i].containsoxy = 2;
+	parts[i].oxidizer = 1;
+}
+
+
 void LO2_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_LO2";
@@ -34,17 +44,17 @@ void LO2_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HotAir = 0.000f	* CFDS;
 	elem->Falldown = 2;
 
-	elem->Flammable = 5000;
+	elem->Flammable = 0;
 	elem->Explosive = 0;
 	elem->Meltable = 0;
 	elem->Hardness = 0;
 
-	elem->Weight = 30;
+	elem->Weight = (int) (1.1 * 20);
 
 	elem->DefaultProperties.temp = 80.0f;
 	elem->HeatConduct = 70;
 	elem->Latent = 0;
-	elem->Description = "Liquid Oxygen. Very cold. Reacts with fire.";
+	elem->Description = "Liquid Oxygen. Very cold.";
 
 	elem->Properties = TYPE_LIQUID;
 
@@ -59,5 +69,7 @@ void LO2_init_element(ELEMENT_INIT_FUNC_ARGS)
 
 	elem->Update = NULL;
 	elem->Graphics = NULL;
+	elem->Func_Create = &LO2_create;
 	elem->Init = &LO2_init_element;
 }
+

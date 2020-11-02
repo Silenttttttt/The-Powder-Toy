@@ -58,7 +58,7 @@ int PROT_update(UPDATE_FUNC_ARGS)
 	case PT_DEUT:
 		if (RNG::Ref().chance(-(sim->air->pv[y/CELL][x/CELL] - 4) + (parts[uID].life / 100), 200))
 		{
-			DeutImplosion(sim, parts[uID].life, x, y, restrict_flt(parts[uID].temp + parts[uID].life*500, MIN_TEMP, MAX_TEMP), PT_PROT);
+			DeutImplosion(sim, parts[uID].life, x, y, restrict_flt(parts[uID].temp + parts[uID].life*500, MIN_TEMP, 10000), PT_PROT);
 			sim->part_kill(uID);
 		}
 		break;
@@ -91,15 +91,15 @@ int PROT_update(UPDATE_FUNC_ARGS)
 			change = 100.0f;
 		else
 			change = 0.0f;
-		parts[uID].temp = restrict_flt(parts[uID].temp + change, MIN_TEMP, MAX_TEMP);
+		parts[uID].temp = restrict_flt(parts[uID].temp + change, MIN_TEMP, 10000);
 		break;
 	}
 	default:
 		// Set off explosives (only when hot because it wasn't as fun when it made an entire save explode)
-		if (parts[i].temp > 273.15f + 500.0f && (sim->elements[utype].Flammable || sim->elements[utype].Explosive || utype == PT_BANG))
+		if (parts[i].temp > 273.15f + 500.0f && (sim->elements[utype].Flammable || sim->elements[utype].Explosive || utype == PT_TNT))
 		{
 			sim->part_create(uID, x, y, PT_FIRE);
-			parts[uID].temp += restrict_flt(sim->elements[utype].Flammable*5.0f, MIN_TEMP, MAX_TEMP);
+			parts[uID].temp += restrict_flt(sim->elements[utype].Flammable*5.0f, MIN_TEMP, 10000);
 			sim->air->pv[y/CELL][x/CELL] += 1.00f;
 		}
 		// Prevent inactive sparkable elements from being sparked
@@ -111,7 +111,7 @@ int PROT_update(UPDATE_FUNC_ARGS)
 	}
 	// Make temp of other things closer to it's own temperature. This will change temp of things that don't conduct, and won't change the PROT's temperature
 	if (utype && utype != PT_WIFI)
-		parts[uID].temp = restrict_flt(parts[uID].temp -(parts[uID].temp - parts[i].temp) / 4.0f, MIN_TEMP, MAX_TEMP);
+		parts[uID].temp = restrict_flt(parts[uID].temp -(parts[uID].temp - parts[i].temp) / 4.0f, MIN_TEMP, 10000);
 	
 	// If this proton has collided with another last frame, change it into a heavier element
 	if (parts[i].tmp)
@@ -135,7 +135,7 @@ int PROT_update(UPDATE_FUNC_ARGS)
 			element = PT_NBLE;
 		newID = sim->part_create(-1, x + RNG::Ref().between(-1, 1), y + RNG::Ref().between(-1, 1), element);
 		if (newID >= 0)
-			parts[newID].temp = restrict_flt(100.0f*parts[i].tmp, MIN_TEMP, MAX_TEMP);
+			parts[newID].temp = restrict_flt(100.0f*parts[i].tmp, MIN_TEMP, 10000);
 		sim->part_kill(i);
 		return 1;
 	}

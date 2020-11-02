@@ -17,7 +17,7 @@
 
 int MORT_update(UPDATE_FUNC_ARGS)
 {
-	sim->part_create(-1, x, y-1, PT_SMKE);
+	sim->part_create(-1, x, y-1, PT_CO2);
 	return 0;
 }
 

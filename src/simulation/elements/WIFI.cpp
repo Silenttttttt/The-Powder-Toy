@@ -51,7 +51,7 @@ public:
 		}
 
 		int q;
-		for ( q = 0; q<(int)(MAX_TEMP-73.15f)/100+2; q++)
+		for ( q = 0; q<(int)(10000 -73.15f)/100+2; q++)
 		{
 			wireless[q][0] = wireless[q][1];
 			wireless[q][1] = 0;

@@ -122,7 +122,7 @@ stamps. save/load more things in powder.pref. Now uses static Libraries, no
 dll's are needed. Some fusion changes to make it more controllable.
 
 Version 14 - 4/1/12
-Lua code in saves run in a limited environment without access to dangerous 
+Lua code in saves run in a limited envFEment without access to dangerous 
 functions that could cause a virus. Prevent infinite loops in Lua, they will 
 exit after 3 seconds (you can click cancel to let it continue running though).
 Oxygen fusion added. 4 New commands: tpt.clear_sim(), tpt.restore_defaults(),
@@ -612,7 +612,7 @@ Fix deco sample sometimes sampling the wrong color. Tons of simulation fixes
 and updates from tpt++/jacksonmj. Fix some saves not loading ctype properly.
 
 Version 30.3 1/9/15
-Revert stacked PSTN fix for now. Fix DMG and IRON. Redo how the save browser
+Revert stacked PSTN fix for now. Fix DMG and FE. Redo how the save browser
 downloads data entirely (will make it easier to edit). Also likely fixes
 freezes when mniip.com or powdertoy.co.uk go down (happens a lot), and reduces
 lag by a bit. Make almost all interfaces cancel when you click off the edges.

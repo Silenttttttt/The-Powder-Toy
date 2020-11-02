@@ -17,7 +17,7 @@
 
 int FWRK_update(UPDATE_FUNC_ARGS)
 {
-	if (parts[i].life == 0 && ((surround_space && parts[i].temp > 400 && RNG::Ref().chance(9+parts[i].temp/40, 100000)) || parts[i].ctype == PT_DUST))
+	if (parts[i].life == 0 && ((surround_space && parts[i].temp > 400 && RNG::Ref().chance(9+parts[i].temp/40, 10000)) || parts[i].ctype == PT_DUST))
 	{
 		float gx, gy, multiplier, gmax;
 		int randTmp;

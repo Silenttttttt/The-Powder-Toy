@@ -86,6 +86,7 @@ std::vector<StructProperty> Element::properties = {
 	{ "HeatConduct",               StructProperty::UChar,           offsetof(Element, HeatConduct)               },
 	{ "Description",               StructProperty::String,          offsetof(Element, Description)               },
 	{ "State",                     StructProperty::Removed,         0                                            },
+	{ "Oxidizer",                    StructProperty::Integer,          offsetof(Element, Oxidizer)                    },
 	{ "Properties",                StructProperty::Integer,         offsetof(Element, Properties)                },
 	{ "LowPressure",               StructProperty::Float,           offsetof(Element, LowPressureTransitionThreshold)     },
 	{ "LowPressureTransition",     StructProperty::TransitionType,  offsetof(Element, LowPressureTransitionElement)       },
