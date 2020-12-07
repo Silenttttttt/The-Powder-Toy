@@ -119,7 +119,7 @@ int K_update(UPDATE_FUNC_ARGS)
 
 
 			}
-	if (parts[i].life <= 0 && parts[i].x == x && parts[i].y == y)
+	if (parts[i].life <= 0)
 	{
 		int temp = parts[i].type;
 		//int templife = parts[i].life;
@@ -128,7 +128,7 @@ int K_update(UPDATE_FUNC_ARGS)
 		{
 			parts[i].ctype = temp;
 		}
-		parts[i].life = RNG::Ref().between(30, 50);//templife;
+		parts[i].life = RNG::Ref().between(10, 20);//templife;
 		return 1;
 	}
 

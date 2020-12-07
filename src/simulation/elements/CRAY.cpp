@@ -71,7 +71,7 @@ int CRAY_update(UPDATE_FUNC_ARGS)
 					if (!TYP(r))
 						continue;
 					// Spark found, start creating
-					if (TYP(r) == PT_SPRK && parts[ID(r)].life == 3)
+					if (TYP(r) == PT_SPRK && parts[ID(r)].tmp2 == 3)
 					{
 						ARGBColour colored = COLARGB(0, 0, 0, 0);
 						int destroy = parts[ID(r)].ctype == PT_PSCN;
@@ -98,8 +98,8 @@ int CRAY_update(UPDATE_FUNC_ARGS)
 									if (colored)
 										parts[nr].dcolour = colored;
 									parts[nr].temp = parts[i].temp;
-									if (parts[i].life > 0)
-										parts[nr].life = parts[i].life;
+									if (parts[i].tmp2 > 0)
+										parts[nr].tmp2 = parts[i].tmp2;
 									if (!--partsRemaining)
 										docontinue = 0;
 								}
@@ -113,7 +113,7 @@ int CRAY_update(UPDATE_FUNC_ARGS)
 									colored = wavelengthToDecoColour(getWavelengths(&parts[ID(r)]));
 								else if (colored == COLRGB(0, 0, 0))
 									colored = COLARGB(0, 0, 0, 0);
-								parts[ID(r)].life = 4;
+								parts[ID(r)].tmp2 = 4;
 							}
 							else if (TYP(r) == PT_CRAY || nostop)
 							{

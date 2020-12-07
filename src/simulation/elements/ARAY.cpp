@@ -19,7 +19,7 @@
 int ARAY_update(UPDATE_FUNC_ARGS)
 {
 	int nxx, nyy, docontinue, nxi, nyi;
-	if (!parts[i].life)
+	if (!parts[i].life || !parts[i].tmp2)
 	{
 		for (int rx=-1; rx <= 1; rx++)
 			for (int ry=-1; ry <= 1; ry++)
@@ -28,7 +28,7 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 					int r = pmap[y+ry][x+rx];
 					if (!r)
 						continue;
-					if (TYP(r) == PT_SPRK && parts[ID(r)].life == 3)
+					if (TYP(r) == PT_SPRK && parts[ID(r)].tmp2 == 3)
 					{
 						bool isBlackDeco = false;
 						int destroy = (parts[ID(r)].ctype==PT_PSCN) ? 1 : 0;
@@ -51,7 +51,7 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 									if (destroy)
 									{
 										parts[nr].tmp = 2;
-										parts[nr].life = 2;
+										parts[nr].tmp2 = 2;
 									}
 									else
 										parts[nr].ctype = colored;
@@ -70,7 +70,7 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 										// if it hits another BRAY that isn't red
 										if (nyy!=0 || nxx!=0)
 										{
-											parts[r].life = 1020; // makes it last a while
+											parts[r].tmp2 = 1020; // makes it last a while
 											parts[r].tmp = 1;
 											if (!parts[r].ctype) // and colors it if it isn't already
 												parts[r].ctype = colored;
@@ -80,7 +80,7 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 										docontinue = 0;
 										break;
 									case 1://if it hits one that already was a long life, reset it
-										parts[r].life = 1020;
+										parts[r].tmp2 = 1020;
 										//docontinue = 1;
 										break;
 									}
@@ -97,7 +97,7 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 											break;
 									}
 									isBlackDeco = (parts[r].dcolour==COLRGB(0, 0, 0));
-									parts[r].life = 4;
+									parts[r].tmp2 = 4;
 								}
 								else if (rt == PT_STOR)
 								{
@@ -112,11 +112,11 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 												if (np != -1)
 												{
 													parts[np].temp = parts[r].temp;
-													parts[np].life = parts[r].tmp2;
+													parts[np].tmp2 = parts[r].tmp2;
 													parts[np].tmp = (int)parts[r].pavg[0];
 													parts[np].ctype = (int)parts[r].pavg[1];
 													parts[r].tmp = 0;
-													parts[r].life = 10;
+													parts[r].tmp2 = 10;
 													break;
 												}
 											}
@@ -124,11 +124,11 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 									}
 									else
 									{
-										parts[r].life = 10;
+										parts[r].tmp2 = 10;
 									}
 								}
 								//this if prevents BRAY from stopping on certain materials
-								else if (rt!=PT_INWR && (rt!=PT_SPRK || parts[r].ctype!=PT_INWR) && rt!=PT_ARAY && rt!=PT_WIFI && !(rt==PT_SWCH && parts[r].life>=10))
+								else if (rt!=PT_INWR && (rt!=PT_SPRK || parts[r].ctype!=PT_INWR) && rt!=PT_ARAY && rt!=PT_WIFI && !(rt==PT_SWCH && parts[r].tmp2>=10))
 								{
 									if ((nyy!=0 || nxx!=0) && rt != PT_WIRE)
 									{
@@ -145,23 +145,23 @@ int ARAY_update(UPDATE_FUNC_ARGS)
 								if (rt == PT_BRAY)
 								{
 									parts[r].tmp = 2;
-									parts[r].life = 1;
+									parts[r].tmp2 = 1;
 									docontinue = 1;
 									if (isBlackDeco)
 										parts[r].dcolour = COLRGB(0, 0, 0);
 								//this if prevents red BRAY from stopping on certain materials
 								}
-								else if (rt==PT_STOR || rt==PT_INWR || (rt==PT_SPRK && parts[r].ctype==PT_INWR) || rt==PT_ARAY || rt==PT_WIFI || rt==PT_FILT || (rt==PT_SWCH && parts[r].life>=10))
+								else if (rt==PT_STOR || rt==PT_INWR || (rt==PT_SPRK && parts[r].ctype==PT_INWR) || rt==PT_ARAY || rt==PT_WIFI || rt==PT_FILT || (rt==PT_SWCH && parts[r].tmp2>=10))
 								{
 									if (rt == PT_STOR)
 									{
 										parts[r].tmp = 0;
-										parts[r].life = 0;
+										parts[r].tmp2 = 0;
 									}
 									else if (rt == PT_FILT)
 									{
 										isBlackDeco = (parts[r].dcolour==COLRGB(0, 0, 0));
-										parts[r].life = 2;
+										parts[r].tmp2 = 2;
 									}
 									docontinue = 1;
 								}

@@ -140,7 +140,7 @@ return 0;
 
 void OIL_create(ELEMENT_CREATE_FUNC_ARGS)
 {
-	parts[i].life = RNG::Ref().between(150, 250);
+	parts[i].life = RNG::Ref().between(250, 450);
 	//parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
 //	if (RNG::Ref().chance(1, 10))
 //	{

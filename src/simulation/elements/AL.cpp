@@ -15,65 +15,28 @@
 
 #include "simulation/ElementsCommon.h"
 
-
-int COAL_graphics(GRAPHICS_FUNC_ARGS);
-
-
-
-int BRMT_update(UPDATE_FUNC_ARGS)
+int AL_update(UPDATE_FUNC_ARGS)
 {
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-	if (abs(parts[i].vx) > 20)
+	if (parts[i].life)
 	{
-		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 2;
-	//	if (parts[i].vx > 0)
-	//	{
-			parts[i].vx /= 3;
-		//}
-	//	else 
-	//	{
-
-		//}
-
+		if (sim->air->pv[y/CELL][x/CELL] > 10.0f)
+		{
+			if (parts[i].temp>9000 && (sim->air->pv[y/CELL][x/CELL] > 30.0f) && RNG::Ref().chance(1, 200))
+			{
+				part_change_type(i, x, y, PT_EXOT);
+				parts[i].life = 1000;
+			}
+			parts[i].temp += (sim->air->pv[y/CELL][x/CELL])/8;
+		}
 	}
-	if (abs(parts[i].vy) > 20)
-	{
-		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 2;
-
-
-		parts[i].vy /= 3;
-	}
-
-
-
-
-
-
-
-
-	
-	
 	return 0;
 }
 
-void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
+void AL_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
-	elem->Identifier = "DEFAULT_PT_BRMT";
-	elem->Name = "BRMT";
-	elem->Colour = COLPACK(0xFFFFFF);
+	elem->Identifier = "DEFAULT_PT_AL";
+	elem->Name = "Alpw";
+	elem->Colour = COLPACK(0x868686);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_POWDERS;
 	elem->Enabled = 1;
@@ -83,21 +46,21 @@ void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->AirLoss = 0.94f;
 	elem->Loss = 0.95f;
 	elem->Collision = -0.1f;
-	elem->Gravity = 0.3f;
+	elem->Gravity = 0.18f;
 	elem->Diffusion = 0.00f;
 	elem->HotAir = 0.000f	* CFDS;
 	elem->Falldown = 1;
 
 	elem->Flammable = 0;
 	elem->Explosive = 0;
-	elem->Meltable = 0;
+	elem->Meltable = 2;
 	elem->Hardness = 2;
 
-	elem->Weight = (int)(3.987 * 20.0);
+	elem->Weight = 90;
 
 	elem->HeatConduct = 121;
 	elem->Latent = 0;
-	elem->Description = "Broken metal. Used as generic broken metal, change ctype to change element.";
+	elem->Description = "Aluminium powder. Generally used in thermite.?";
 
 	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_HOT_GLOW;
 
@@ -107,10 +70,10 @@ void BRMT_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighPressureTransitionElement = NT;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
-	elem->HighTemperatureTransitionThreshold = MAX_TEMP;
-	elem->HighTemperatureTransitionElement = ST;
+	elem->HighTemperatureTransitionThreshold = 660.3 + 273.15;
+	elem->HighTemperatureTransitionElement = PT_LAVA;
 
-	elem->Update = &BRMT_update;
-	elem->Graphics = &COAL_graphics;
-	elem->Init = &BRMT_init_element;
+	elem->Update = &AL_update;
+	elem->Graphics = NULL;
+	elem->Init = &AL_init_element;
 }

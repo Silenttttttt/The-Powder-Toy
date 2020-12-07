@@ -17,6 +17,36 @@
 
 int H2_update(UPDATE_FUNC_ARGS)
 {
+
+
+
+
+
+
+
+
+
+	int blockpress = 0;
+	for (int nx = -2; nx <= 2; nx++)
+	{
+		for (int ny = -2; ny <= 2; ny++)
+		{
+			if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
+			{
+				if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
+					blockpress++;
+			}
+		}
+	}
+
+	if (blockpress >= 8)
+	{
+		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
+	}
+
+
+
 	int r,rx,ry,rt;
 	for (rx=-2; rx<3; rx++)
 		for (ry=-2; ry<3; ry++)
@@ -47,14 +77,14 @@ int H2_update(UPDATE_FUNC_ARGS)
 							parts[ID(r)].temp = 2473.15f;
 						parts[ID(r)].tmp |= 1;
 
-						sim->part_create(i,x,y,PT_FIRE);
+						sim->part_change_type(i,x,y,PT_FIRE);
 						parts[i].temp += RNG::Ref().between(0, 99);
 						parts[i].tmp |= 1;
 						return 1;
 					}
 					else if ((rt==PT_PLSM && !(parts[ID(r)].tmp&4)) || (rt==PT_LAVA && parts[ID(r)].ctype != PT_BMTL))
 					{
-						sim->part_create(i,x,y,PT_FIRE);
+						sim->part_change_type(i,x,y,PT_FIRE);
 						parts[i].temp += RNG::Ref().between(0, 99);
 						parts[i].tmp |= 1;
 						sim->air->pv[y/CELL][x/CELL] += 0.1f;

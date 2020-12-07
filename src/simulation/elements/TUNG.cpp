@@ -18,18 +18,13 @@
 int TUNG_update(UPDATE_FUNC_ARGS)
 {
 
-	if (sim->air->pv[y / CELL][x / CELL] > 100 || sim->air->pv[y / CELL][x / CELL] < -100)//diff > 0.50f || diff < -0.50f)
+	if (abs(sim->air->pv[y / CELL][x / CELL]) > 150)//diff > 0.50f || diff < -0.50f)
 	{
 		part_change_type(i, x, y, PT_BRMT);
 		parts[i].ctype = PT_TUNG;
 		return 1;
 	}
-	int tungst = 0;
-	if (nt <= 2)
-		tungst = 2;
-	else if (parts[i].tmp)
-		tungst = 2;
-	else if (nt <= 6)
+	int blockpress = 0;
 		for (int nx = -2; nx <= 2; nx++)
 		{
 			for (int ny = -2; ny <= 2; ny++)
@@ -37,17 +32,17 @@ int TUNG_update(UPDATE_FUNC_ARGS)
 				if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
 				{
 					if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
-						tungst++;
+						blockpress++;
 				}
 			}
 		}
 
-	if (tungst >= 4)
+	if (blockpress >= 8)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
 	}
-	return 0;
+	
 
 
 

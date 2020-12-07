@@ -15,7 +15,12 @@
 
 #include "simulation/ElementsCommon.h"
 
-int BMTL_update(UPDATE_FUNC_ARGS)
+
+
+int COAL_graphics(GRAPHICS_FUNC_ARGS);
+
+
+int FEOX_update(UPDATE_FUNC_ARGS)
 {
 
 
@@ -77,7 +82,7 @@ int BMTL_update(UPDATE_FUNC_ARGS)
 
 
 
-					if (TYP(r) == PT_AL && RNG::Ref().chance(1, 1000))
+					if (TYP(r) == PT_AL && RNG::Ref().chance(1, 1000- parts[i].temp / 2) )
 					{
 						if (RNG::Ref().chance(1, 2))
 						{
@@ -103,11 +108,11 @@ int BMTL_update(UPDATE_FUNC_ARGS)
 	return 0;
 }
 
-void BMTL_init_element(ELEMENT_INIT_FUNC_ARGS)
+void FEOX_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
-	elem->Identifier = "DEFAULT_PT_BMTL"; 
-	elem->Name = "Fepw";
-	elem->Colour = COLPACK(0xa19d94);
+	elem->Identifier = "DEFAULT_PT_FEOX"; 
+	elem->Name = "FeOx";
+	elem->Colour = COLPACK(0x702809);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_POWDERS;
 	elem->Enabled = 1;
@@ -117,7 +122,7 @@ void BMTL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->AirLoss = 0.94f;
 	elem->Loss = 0.95f;
 	elem->Collision = -0.1f;
-	elem->Gravity = 0.4f;
+	elem->Gravity = 0.3f;
 	elem->Diffusion = 0.00f;
 	elem->HotAir = 0.000f * CFDS;
 	elem->Falldown = 1;
@@ -127,13 +132,13 @@ void BMTL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 0;
 	elem->Hardness = 1;
 
-	elem->Weight = (int)(7.87 * 20);
+	elem->Weight = (int)(5.25 * 20.0);
 
-	elem->HeatConduct = 230;
+	elem->HeatConduct = 121;
 	elem->Latent = 0;
-	elem->Description = "Iron metal powder.";
+	elem->Description = "Iron oxide. Reddish brown oxide formed by the reaction of iron and oxygen in the presence of water.";
 
-	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_HOT_GLOW;
+	elem->Properties = TYPE_PART|PROP_HOT_GLOW;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
@@ -141,10 +146,10 @@ void BMTL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighPressureTransitionElement = NT;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
-	elem->HighTemperatureTransitionThreshold = 1538 + 273;
+	elem->HighTemperatureTransitionThreshold = 1539 + 273;
 	elem->HighTemperatureTransitionElement = PT_LAVA;
 
-	elem->Update = &BMTL_update;
-	elem->Graphics = NULL;
-	elem->Init = &BMTL_init_element;
+	elem->Update = &FEOX_update;
+	elem->Graphics = &COAL_graphics;
+	elem->Init = &FEOX_init_element;
 }

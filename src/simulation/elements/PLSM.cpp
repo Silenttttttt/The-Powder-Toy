@@ -67,10 +67,10 @@ void PLSM_init_element(ELEMENT_INIT_FUNC_ARGS)
 
 	elem->Weight = 1;
 
-	elem->DefaultProperties.temp = 30000;
-	elem->HeatConduct = 5;
+	elem->DefaultProperties.temp = 11600;
+	elem->HeatConduct = 3;
 	elem->Latent = 0;
-	elem->Description = "Plasma, extremely hot.";
+	elem->Description = "Plasma. Very hot ionized gas.";
 
 	elem->Properties = TYPE_GAS|PROP_LIFE_DEC|PROP_LIFE_KILL;
 

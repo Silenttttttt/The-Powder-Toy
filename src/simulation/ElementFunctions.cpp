@@ -94,20 +94,9 @@ int update_legacy_all(UPDATE_FUNC_ARGS)
 						part_change_type(i,x,y,PT_WATR);
 				}
 		break;
-	case PT_OIL:
-		if (sim->air->pv[y/CELL][x/CELL] < -6.0f)
-			part_change_type(i,x,y,PT_GAS);
-		break;
-	case PT_GAS:
-		if (sim->air->pv[y/CELL][x/CELL] > 6.0f)
-			part_change_type(i,x,y,PT_OIL);
-		break;
-	case PT_DESL:
-		if (sim->air->pv[y/CELL][x/CELL] > 12.0f)
-		{
-			part_change_type(i,x,y,PT_FIRE);
-			parts[i].life = RNG::Ref().between(120, 169);
-		}
+
+
+
 	default:
 		break;
 	}

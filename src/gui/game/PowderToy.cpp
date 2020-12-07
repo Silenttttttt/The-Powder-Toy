@@ -234,7 +234,7 @@ PowderToy::PowderToy():
 	size = Point(minWidth > 15 ? minWidth : 15, ySize);
 	reportBugButton = new Button(optionsButton->Left(Point(size.X+1, 0)), size, "\xE7");
 	reportBugButton->SetCallback([&](int mb) { this->ReportBugBtn(); });
-	reportBugButton->SetTooltip(new ToolTip("Report bugs and feedback to jacob1", Point(16, YRES-24), TOOLTIP, tooltipAlpha));
+	reportBugButton->SetTooltip(new ToolTip("Report bugs and feedback to Silent", Point(16, YRES-24), TOOLTIP, tooltipAlpha));
 	AddComponent(reportBugButton);
 
 	Point tagsPos = downvoteButton->Right(Point(1, 0));
@@ -651,7 +651,7 @@ void PowderToy::ConfirmUpdate(std::string changelog, std::string file)
 #ifdef ANDROID
 	std::string title = "\bwDo you want to update TPT?";
 #else
-	std::string title = "\bwDo you want to update Jacob1's Mod?";
+	std::string title = "\bwDo you want to update Silent's Mod?";
 #endif
 	ConfirmPrompt *confirm = new ConfirmPrompt([file](bool wasConfirmed) {
 		if (wasConfirmed)
@@ -2002,7 +2002,7 @@ void PowderToy::OnKeyPress(int key, int scan, bool repeat, bool shift, bool ctrl
 				this->ignoreQuits = false;
 				this->toDelete = true;
 			}
-		}, "You are about to quit", "Are you sure you want to exit the game?", "Quit");
+		}, "You are about to quit", "Are you sure you want to exit the game?", "Don't quit");
 		Engine::Ref().ShowWindow(confirm);
 		break;
 	}
@@ -2030,7 +2030,7 @@ void PowderToy::OnKeyPress(int key, int scan, bool repeat, bool shift, bool ctrl
 					if (parts[i].ctype >= 0 && parts[i].ctype < PT_NUM && globalSim->elements[parts[i].ctype].Enabled)
 					{
 						parts[i].type = parts[i].ctype;
-						parts[i].life = parts[i].ctype = 0;
+						parts[i].tmp2 = parts[i].ctype = 0;
 					}
 					else
 						sim->part_kill(i);

@@ -158,21 +158,21 @@ void CU_create(ELEMENT_CREATE_FUNC_ARGS)
 void CU_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_CU";
-	elem->Name = "CU";
+	elem->Name = "Cu";
 	elem->Colour = COLPACK(0xb86833);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_SOLIDS;
 	elem->Enabled = 1;
 
-	elem->Advection = 0.4f;
-	elem->AirDrag = 0.04f * CFDS;
-	elem->AirLoss = 0.94f;
-	elem->Loss = 0.95f;
-	elem->Collision = -0.1f;
-	elem->Gravity = 0.3f;
+	elem->Advection = 0.0f;
+	elem->AirDrag = 0.00f * CFDS;
+	elem->AirLoss = 0.90f;
+	elem->Loss = 0.00f;
+	elem->Collision = 0.0f;
+	elem->Gravity = 0.0f;
 	elem->Diffusion = 0.00f;
-	elem->HotAir = 0.000f	* CFDS;
-	elem->Falldown = 1;
+	elem->HotAir = 0.000f * CFDS;
+	elem->Falldown = 0;
 
 	elem->Flammable = 0;
 	elem->Explosive = 0;
@@ -186,7 +186,7 @@ void CU_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Copper metal. Very high thermal and electrical conductivity";
 
-	elem->Properties = TYPE_SOLID;
+	elem->Properties = TYPE_SOLID | PROP_HOT_GLOW | PROP_CONDUCTS;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
@@ -194,7 +194,7 @@ void CU_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighPressureTransitionElement = NT;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
-	elem->HighTemperatureTransitionThreshold = 1084 + 273;
+	elem->HighTemperatureTransitionThreshold = 1085 + 273.15;
 	elem->HighTemperatureTransitionElement = PT_LAVA;
 
 

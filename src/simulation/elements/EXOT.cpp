@@ -62,7 +62,7 @@ int EXOT_update(UPDATE_FUNC_ARGS)
 					}
 				}
 				if (parts[i].tmp > 245 && parts[i].life > 1337)
-					if (rt != PT_EXOT && rt != PT_BREL && !(sim->elements[rt].Properties & PROP_INDESTRUCTIBLE) &&
+					if (rt != PT_EXOT && rt != PT_AL && !(sim->elements[rt].Properties & PROP_INDESTRUCTIBLE) &&
 					        rt != PT_PRTI && rt != PT_PRTO && rt != PT_VOID && rt != PT_NBHL && rt != PT_WARP)
 					{
 						sim->part_create(i, x, y, rt);

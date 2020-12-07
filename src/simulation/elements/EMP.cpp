@@ -45,7 +45,7 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 {
 	/* Known differences from original one-particle-at-a-time version:
 	 * - SPRK that disappears during a frame (such as SPRK with life==0 on that frame) will not cause destruction around it.
-	 * - SPRK neighbour effects are calculated assuming the SPRK exists and causes destruction around it for the entire frame (so was not turned into BREL/NTCT partway through). This means mass EMP will be more destructive.
+	 * - SPRK neighbour effects are calculated assuming the SPRK exists and causes destruction around it for the entire frame (so was not turned into AL/NTCT partway through). This means mass EMP will be more destructive.
 	 * - The chance of a METL particle near sparked semiconductor turning into BRMT within 1 frame is different if triggerCount>2. See comment for prob_breakMETLMore.
 	 * - Probability of centre isElec particle breaking is slightly different (1/48 instead of 1-(1-1/80)*(1-1/120) = just under 1/48).
 	 */
@@ -96,7 +96,7 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 				if (RNG::Ref().uniform01() < prob_changeCenter)
 				{
 					if (RNG::Ref().chance(2, 5))
-						sim->part_change_type(r, rx, ry, PT_BREL);
+						sim->part_change_type(r, rx, ry, PT_AL);
 					else
 						sim->part_change_type(r, rx, ry, PT_NTCT);
 				}
@@ -144,7 +144,7 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 								}
 								if (RNG::Ref().uniform01() < prob_breakWIFI)
 								{
-									sim->part_create(n, rx+nx, ry+ny, PT_BREL);
+									sim->part_create(n, rx+nx, ry+ny, PT_AL);
 									parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 								}
 								continue;
@@ -156,13 +156,13 @@ void EMP_ElementDataContainer::Simulation_AfterUpdate(Simulation *sim)
 						{
 						case PT_SWCH:
 							if (RNG::Ref().uniform01() < prob_breakSWCH)
-								sim->part_change_type(n, rx+nx, ry+ny, PT_BREL);
+								sim->part_change_type(n, rx+nx, ry+ny, PT_AL);
 							temp_SWCH.apply(sim, parts[n]);
 							break;
 						case PT_ARAY:
 							if (RNG::Ref().uniform01() < prob_breakARAY)
 							{
-								sim->part_create(n, rx+nx, ry+ny, PT_BREL);
+								sim->part_create(n, rx+nx, ry+ny, PT_AL);
 								parts[n].temp = restrict_flt(parts[n].temp+1000.0f, MIN_TEMP, 10000);
 							}
 							break;

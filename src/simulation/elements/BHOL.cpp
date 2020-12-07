@@ -22,17 +22,17 @@ void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Colour = COLPACK(0x303030);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_SPECIAL;
-	elem->Enabled = 1;
+	elem->Enabled = 0;
 
 	elem->Advection = 0.0f;
 	elem->AirDrag = 0.00f * CFDS;
 	elem->AirLoss = 0.95f;
 	elem->Loss = 0.00f;
 	elem->Collision = 0.0f;
-	elem->Gravity = 0.0f;
+	elem->Gravity = 9999999999999999.0f;
 	elem->Diffusion = 0.00f;
 	elem->HotAir = -0.01f	* CFDS;
-	elem->Falldown = 0;
+	elem->Falldown = 1;
 
 	elem->Flammable = 0;
 	elem->Explosive = 0;
@@ -46,7 +46,7 @@ void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Vacuum, sucks in other particles and heats up.";
 
-	elem->Properties = TYPE_SOLID;
+	elem->Properties = TYPE_PART;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;

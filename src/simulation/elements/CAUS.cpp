@@ -25,14 +25,7 @@ int CAUS_update(UPDATE_FUNC_ARGS)
 				r = pmap[y+ry][x+rx];
 				if (!r)
 					continue;
-				if (TYP(r) == PT_GAS)
-				{
-					if (sim->air->pv[(y+ry)/CELL][(x+rx)/CELL] > 3)
-					{
-						sim->part_change_type(ID(r), x+rx, y+ry, PT_RFRG);
-						sim->part_change_type(i, x, y, PT_RFRG);
-					}
-				}
+			
 				else if (TYP(r)!=PT_ACID && TYP(r)!=PT_CAUS && TYP(r)!=PT_RFRG && TYP(r)!=PT_RFGL)
 				{
 					if ((!(sim->elements[TYP(r)].Properties&PROP_CLONE) && RNG::Ref().chance(sim->elements[TYP(r)].Hardness, 1000)) && parts[i].life>=50)

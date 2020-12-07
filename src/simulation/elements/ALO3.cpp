@@ -15,28 +15,65 @@
 
 #include "simulation/ElementsCommon.h"
 
-int BREL_update(UPDATE_FUNC_ARGS)
+
+int COAL_graphics(GRAPHICS_FUNC_ARGS);
+
+
+
+int ALO3_update(UPDATE_FUNC_ARGS)
 {
-	if (parts[i].life)
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+	if (abs(parts[i].vx) > 20)
 	{
-		if (sim->air->pv[y/CELL][x/CELL] > 10.0f)
-		{
-			if (parts[i].temp>9000 && (sim->air->pv[y/CELL][x/CELL] > 30.0f) && RNG::Ref().chance(1, 200))
-			{
-				part_change_type(i, x, y, PT_EXOT);
-				parts[i].life = 1000;
-			}
-			parts[i].temp += (sim->air->pv[y/CELL][x/CELL])/8;
-		}
+		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 2;
+	//	if (parts[i].vx > 0)
+	//	{
+			parts[i].vx /= 3;
+		//}
+	//	else 
+	//	{
+
+		//}
+
 	}
+	if (abs(parts[i].vy) > 20)
+	{
+		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 2;
+
+
+		parts[i].vy /= 3;
+	}
+
+
+
+
+
+
+
+
+	
+	
 	return 0;
 }
 
-void BREL_init_element(ELEMENT_INIT_FUNC_ARGS)
+void ALO3_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
-	elem->Identifier = "DEFAULT_PT_BREC";
-	elem->Name = "BREL";
-	elem->Colour = COLPACK(0x707060);
+	elem->Identifier = "DEFAULT_PT_ALO3";
+	elem->Name = "AlO3";
+	elem->Colour = COLPACK(0xFFFFFF);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_POWDERS;
 	elem->Enabled = 1;
@@ -46,23 +83,23 @@ void BREL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->AirLoss = 0.94f;
 	elem->Loss = 0.95f;
 	elem->Collision = -0.1f;
-	elem->Gravity = 0.18f;
+	elem->Gravity = 0.3f;
 	elem->Diffusion = 0.00f;
 	elem->HotAir = 0.000f	* CFDS;
 	elem->Falldown = 1;
 
 	elem->Flammable = 0;
 	elem->Explosive = 0;
-	elem->Meltable = 2;
+	elem->Meltable = 0;
 	elem->Hardness = 2;
 
-	elem->Weight = 90;
+	elem->Weight = (int)(3.987 * 20.0);
 
-	elem->HeatConduct = 211;
+	elem->HeatConduct = 121;
 	elem->Latent = 0;
-	elem->Description = "Broken electronics. Formed from EMP blasts, and when constantly sparked while under pressure, turns to EXOT.";
+	elem->Description = "Aluminium oxide (Al2O3). Commonly called alumina, high melting point";
 
-	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_LIFE_DEC|PROP_HOT_GLOW;
+	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_HOT_GLOW;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
@@ -70,10 +107,10 @@ void BREL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighPressureTransitionElement = NT;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
-	elem->HighTemperatureTransitionThreshold = ITH;
-	elem->HighTemperatureTransitionElement = NT;
+	elem->HighTemperatureTransitionThreshold = 2072 + 273.15;
+	elem->HighTemperatureTransitionElement = ST;
 
-	elem->Update = &BREL_update;
-	elem->Graphics = NULL;
-	elem->Init = &BREL_init_element;
+	elem->Update = &ALO3_update;
+	elem->Graphics = &COAL_graphics;
+	elem->Init = &ALO3_init_element;
 }

@@ -51,7 +51,7 @@ void INDI_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
 	elem->HighPressureTransitionThreshold = 10.0f;
-	elem->HighPressureTransitionElement = PT_BREL;
+	elem->HighPressureTransitionElement = PT_AL;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = 1273.0f;

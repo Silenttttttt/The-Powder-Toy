@@ -34,7 +34,7 @@ void MWAX_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HotAir = 0.000001f* CFDS;
 	elem->Falldown = 2;
 
-	elem->Flammable = 5;
+	elem->Flammable = 0;
 	elem->Explosive = 0;
 	elem->Meltable = 0;
 	elem->Hardness = 2;
@@ -55,7 +55,7 @@ void MWAX_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowTemperatureTransitionThreshold = 318.0f;
 	elem->LowTemperatureTransitionElement = PT_WAX;
 	elem->HighTemperatureTransitionThreshold = 673.0f;
-	elem->HighTemperatureTransitionElement = PT_FIRE;
+	elem->HighTemperatureTransitionElement = PT_FIRE; // bad bad bad fix :(
 
 	elem->Update = NULL;
 	elem->Graphics = NULL;

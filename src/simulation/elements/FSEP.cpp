@@ -95,7 +95,7 @@ void FSEP_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighTemperatureTransitionThreshold = ITH;
 	elem->HighTemperatureTransitionElement = NT;
 
-	elem->DefaultProperties.life = 50;
+	elem->DefaultProperties.life = RNG::Ref().between(50, 80);
 
 	elem->Update = &FSEP_update;
 	elem->Graphics = NULL;

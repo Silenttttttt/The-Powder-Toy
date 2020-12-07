@@ -19,7 +19,24 @@ int WOOD_update(UPDATE_FUNC_ARGS)
 {
 
 
+	int blockpress = 0;
+	for (int nx = -2; nx <= 2; nx++)
+	{
+		for (int ny = -2; ny <= 2; ny++)
+		{
+			if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
+			{
+				if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
+					blockpress++;
+			}
+		}
+	}
 
+	if (blockpress >= 8)
+	{
+		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
+	}
 
 
 

@@ -17,6 +17,28 @@
 
 int FUSE_update(UPDATE_FUNC_ARGS)
 {
+
+	int blockpress = 0;
+	for (int nx = -2; nx <= 2; nx++)
+	{
+		for (int ny = -2; ny <= 2; ny++)
+		{
+			if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
+			{
+				if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
+					blockpress++;
+			}
+		}
+	}
+
+	if (blockpress >= 8)
+	{
+		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
+	}
+
+
+
 	int r, rx, ry;
 	if (parts[i].life <= 0)
 	{
@@ -103,7 +125,7 @@ void FUSE_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighTemperatureTransitionThreshold = ITH;
 	elem->HighTemperatureTransitionElement = NT;
 
-	elem->DefaultProperties.life = 50;
+	elem->DefaultProperties.life = RNG::Ref().between(90, 110);
 	elem->DefaultProperties.tmp = 50;
 
 	elem->Update = &FUSE_update;

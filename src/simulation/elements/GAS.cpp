@@ -23,11 +23,29 @@
 int GAS_update(UPDATE_FUNC_ARGS)
 {
 
+	int blockpress = 0;
+	for (int nx = -2; nx <= 2; nx++)
+	{
+		for (int ny = -2; ny <= 2; ny++)
+		{
+			if ((!nx != !ny) && x + nx >= 0 && y + ny >= 0 && x + nx < XRES && y + ny < YRES)
+			{
+				if (TYP(pmap[y + ny][x + nx]) == PT_TUNG)
+					blockpress++;
+			}
+		}
+	}
 
-	/*float limit = parts[i].temp / 20;
+	if (blockpress >= 8)
+	{
+		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
+	}
+
+	float limit = parts[i].temp / 20;
 	if (sim->air->pv[y / CELL][x / CELL] < limit)
-		sim->air->pv[y / CELL][x / CELL] += 0.001f * (limiwt - sim->air->pv[y / CELL][x / CELL]);
-	if (sim->air->pv[y / CELL + 1][x / CELL] < limit)6
+		sim->air->pv[y / CELL][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL]);
+	if (sim->air->pv[y / CELL + 1][x / CELL] < limit)
 		sim->air->pv[y / CELL + 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL]);
 	if (sim->air->pv[y / CELL - 1][x / CELL] < limit)
 		sim->air->pv[y / CELL - 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL]);
@@ -36,7 +54,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 	sim->air->pv[y / CELL + 1][x / CELL + 1] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL + 1]);
 	sim->air->pv[y / CELL][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL - 1]);
 	sim->air->pv[y / CELL - 1][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL - 1]);
-	*/
+	parts[i].temp -= 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL - 1]);
 
 	int temp = 0;
 	int oxyposnum = 0;
@@ -83,7 +101,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 
 				//continue;
 				int rt = TYP(r);
-				if ((RNG::Ref().chance(1, 10) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > 250 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 2) || rt == PT_FIRE || rt == PT_PLSM))
+				if ((RNG::Ref().chance(1, 5) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > 350 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5) || rt == PT_FIRE || rt == PT_PLSM))
 				{
 
 					if (oxyposnum > 0 && oxyposnum < 10)
@@ -114,11 +132,11 @@ int GAS_update(UPDATE_FUNC_ARGS)
 						if (RNG::Ref().chance(1, 10))
 						{
 							parts[i].life -= 1 * parts[i].containsoxy;
-						}
+						} 
 					}
 				}
 
-				else if (RNG::Ref().chance(1, 10) && parts[i].life > 0 && parts[i].containsoxy <= 0 && (parts[i].temp > 300 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 2) || rt == PT_FIRE || rt == PT_PLSM || rt == PT_EMBR))
+				else if (RNG::Ref().chance(1, 5) && parts[i].life > 0 && parts[i].containsoxy <= 0 && (parts[i].temp > 250 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5) || rt == PT_FIRE || rt == PT_PLSM || rt == PT_EMBR))
 				{
 
 					//parts[i].life--;
@@ -155,7 +173,7 @@ void GAS_create(ELEMENT_CREATE_FUNC_ARGS)
 {
 	if (parts[i].life == 0)
 	{
-		parts[i].life = RNG::Ref().between(150, 250);
+		parts[i].life = RNG::Ref().between(250, 350);
 	}
 //	parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
 	if (RNG::Ref().chance(1, 10))
@@ -194,9 +212,9 @@ void GAS_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 0;
 	elem->Hardness = 1;
 
-	elem->Weight = 1;
+	elem->Weight = (int)(0.68 * 20.0);
 
-	elem->DefaultProperties.temp = R_TEMP + 2.0f + 273.15f;
+	elem->DefaultProperties.temp = R_TEMP + 273.15f;
 	elem->HeatConduct = 42;
 	elem->Latent = 0;
 	elem->Description = "Natural gas. Very flammable, condenses into oil.";
@@ -207,7 +225,7 @@ void GAS_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowPressureTransitionElement = NT;
 	elem->HighPressureTransitionThreshold = IPH;
 	elem->HighPressureTransitionElement = NT;
-	elem->LowTemperatureTransitionThreshold = 573.15f;
+	elem->LowTemperatureTransitionThreshold = 283.15f;
 	elem->LowTemperatureTransitionElement = PT_OIL;
 	elem->HighTemperatureTransitionThreshold = ITH;
 	elem->HighTemperatureTransitionElement = NT;

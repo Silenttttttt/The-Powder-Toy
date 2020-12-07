@@ -166,7 +166,7 @@ void N2_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->DefaultProperties.temp = R_TEMP + 2.0f + 273.15f;
 	elem->HeatConduct = 42;
 	elem->Latent = 0;
-	elem->Description = "Nitrogen is a gas at room temperature.";
+	elem->Description = "Nitrogen. A gas at room temperature.";
 
 	elem->Properties = TYPE_GAS;
 

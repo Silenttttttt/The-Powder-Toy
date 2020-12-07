@@ -1526,7 +1526,7 @@ bool Simulation::UpdateParticle(int i)
 
 	if (elements[t].HotAir)
 	{
-		if (t == PT_GAS || t == PT_NBLE)
+		if (t == PT_NBLE)
 		{
 			if (air->pv[y/CELL][x/CELL] < 3.5f)
 				air->pv[y/CELL][x/CELL] += elements[t].HotAir*(3.5f - air->pv[y/CELL][x/CELL]);

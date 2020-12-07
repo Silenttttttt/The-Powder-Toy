@@ -131,10 +131,7 @@ int NEUT_update(UPDATE_FUNC_ARGS)
 						sim->part_create(ID(r), x+rx, y+ry, PT_WOOD);
 					break;
 				case PT_DESL:
-				case PT_OIL:
-					if (RNG::Ref().chance(3, 200))
-						sim->part_change_type(ID(r), x+rx, y+ry, PT_GAS);
-					break;
+			
 				case PT_COAL:
 					if (RNG::Ref().chance(1, 20))
 						sim->part_create(ID(r), x+rx, y+ry, PT_WOOD);
@@ -171,9 +168,7 @@ int NEUT_update(UPDATE_FUNC_ARGS)
 						parts[ID(r)].life = 1500;
 					break;
 				case PT_RFRG:
-					if (RNG::Ref().chance(1, 2))
-						sim->part_create(ID(r), x+rx, y+ry, PT_GAS);
-					else
+					
 						sim->part_create(ID(r), x+rx, y+ry, PT_CAUS);
 					break;
 				default:

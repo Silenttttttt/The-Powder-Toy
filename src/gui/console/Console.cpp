@@ -181,22 +181,26 @@ void Console::RepositionLabels(int adjustAmount)
 
 void Console::DiscardOldestCommand()
 {
-	int subtractedSize = 0;
-	while (consoleHistoryLabels.size() > 20)
-	{
-		auto consoleHistory = consoleHistoryLabels.end() - 1;
-		scrollWindow->RemoveComponent(consoleHistory->first);
-		scrollWindow->RemoveComponent(consoleHistory->second);
-		consoleHistoryLabels.pop_back();
-		subtractedSize += tpt::max(consoleHistory->first->GetSize().Y, consoleHistory->second->GetSize().Y);
-	}
-	while (consoleHistory.size() > 20)
-		consoleHistory.pop_back();
+	
+		int subtractedSize = 0;
+		while (consoleHistoryLabels.size() > 20)
+		{
+			auto consoleHistory = consoleHistoryLabels.end() - 1;
+			scrollWindow->RemoveComponent(consoleHistory->first);
+			scrollWindow->RemoveComponent(consoleHistory->second);
+			consoleHistoryLabels.pop_back();
+			subtractedSize += tpt::max(consoleHistory->first->GetSize().Y, consoleHistory->second->GetSize().Y);
+		}
+		while (consoleHistory.size() > 20)
+			consoleHistory.pop_back();
 
-	int oldScrollSize = scrollWindow->GetScrollSize();
-	scrollWindow->SetScrollSize(scrollWindow->GetScrollSize() - subtractedSize, true);
-	if (scrollWindow->GetScrollSize() > 0)
-		RepositionLabels(-tpt::min(subtractedSize, oldScrollSize));
+		int oldScrollSize = scrollWindow->GetScrollSize();
+		scrollWindow->SetScrollSize(scrollWindow->GetScrollSize() - subtractedSize, true);
+		if (scrollWindow->GetScrollSize() > 0)
+			RepositionLabels(-tpt::min(subtractedSize, oldScrollSize));
+	
+
+	
 }
 
 void Console::SetHistoryLoc(int historyLoc)

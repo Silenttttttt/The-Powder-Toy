@@ -57,7 +57,7 @@ int VIBR_update(UPDATE_FUNC_ARGS)
 			ry = (rndstore>>2)%3-1;
 			rndstore = rndstore >> 4;
 			r = pmap[y+ry][x+rx];
-			if (TYP(r) && TYP(r) != PT_BREL && (sim->elements[TYP(r)].Properties&PROP_CONDUCTS) && !parts[ID(r)].life)
+			if (TYP(r) && TYP(r) != PT_AL && (sim->elements[TYP(r)].Properties&PROP_CONDUCTS) && !parts[ID(r)].life)
 			{
 				sim->spark_conductive(ID(r), x+rx, y+ry);
 			}
@@ -91,7 +91,7 @@ int VIBR_update(UPDATE_FUNC_ARGS)
 					parts[index].temp = 7000;
 				int rx = ((rndstore>>12)&3)-1;
 				rndstore = RNG::Ref().gen();
-				index = sim->part_create(-1,x+rx-1,y+rndstore%3-1,PT_BREL);
+				index = sim->part_create(-1,x+rx-1,y+rndstore%3-1,PT_AL);
 				if (index != -1)
 					parts[index].temp = 7000;
 				sim->part_create(i, x, y, PT_EXOT);

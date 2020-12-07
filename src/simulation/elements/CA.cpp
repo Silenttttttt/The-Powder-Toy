@@ -158,7 +158,7 @@ void CA_create(ELEMENT_CREATE_FUNC_ARGS)
 void CA_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_CA";
-	elem->Name = "CA";
+	elem->Name = "Ca";
 	elem->Colour = COLPACK(0xE9E6E4);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_POWDERS;
