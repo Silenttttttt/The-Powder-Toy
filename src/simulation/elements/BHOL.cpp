@@ -15,6 +15,11 @@
 
 #include "simulation/ElementsCommon.h"
 
+int BHOL_update(UPDATE_FUNC_ARGS)
+{
+	part_change_type(i, x, y, PT_NONE);
+	return 0;
+}
 void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 {
 	elem->Identifier = "DEFAULT_PT_BHOL";
@@ -29,7 +34,7 @@ void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->AirLoss = 0.95f;
 	elem->Loss = 0.00f;
 	elem->Collision = 0.0f;
-	elem->Gravity = 9999999999999999.0f;
+	elem->Gravity = 0.0f;
 	elem->Diffusion = 0.00f;
 	elem->HotAir = -0.01f	* CFDS;
 	elem->Falldown = 1;
@@ -39,14 +44,14 @@ void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 0;
 	elem->Hardness = 0;
 
-	elem->Weight = 100;
+	elem->Weight = -1000;
 
 	elem->DefaultProperties.temp = R_TEMP + 70.0f + 273.15f;
-	elem->HeatConduct = 255;
+	elem->HeatConduct = 0;
 	elem->Latent = 0;
 	elem->Description = "Vacuum, sucks in other particles and heats up.";
 
-	elem->Properties = TYPE_PART;
+	elem->Properties = TYPE_GAS;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
@@ -57,7 +62,7 @@ void BHOL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighTemperatureTransitionThreshold = ITH;
 	elem->HighTemperatureTransitionElement = NT;
 
-	elem->Update = NULL;
+	elem->Update = &BHOL_update;
 	elem->Graphics = NULL;
 	elem->Init = &BHOL_init_element;
 }

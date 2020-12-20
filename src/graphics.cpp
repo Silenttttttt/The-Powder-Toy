@@ -1456,7 +1456,7 @@ void draw_air(pixel *vid, Simulation * sim)
 				else
 				{
 					float ttemp = sim->air->hv[y][x]+(-MIN_TEMP);
-					int caddress = (int)restrict_flt((int)( restrict_flt(ttemp, 0.0f, (float)MAX_TEMP+(-MIN_TEMP)) / ((MAX_TEMP+(-MIN_TEMP))/1024) ) *3.0f, 0.0f, (1024.0f*3)-3);
+					int caddress = (int)restrict_flt((int)( restrict_flt(ttemp, 0.0f, (float)10000+(-MIN_TEMP)) / ((10000+(-MIN_TEMP))/1024) ) *3.0f, 0.0f, (1024.0f*3)-3);
 					c = PIXRGB((int)((unsigned char)color_data[caddress]*0.7f), (int)((unsigned char)color_data[caddress+1]*0.7f), (int)((unsigned char)color_data[caddress+2]*0.7f));
 				}
 			}
@@ -1942,7 +1942,7 @@ void render_parts(pixel *vid, Simulation * sim, Point mousePos)
 				if(color_mode & COLOR_HEAT)
 				{
 					if (heatmode == 0)
-						caddress = (int)restrict_flt((int)( restrict_flt((float)(parts[i].temp+(-MIN_TEMP)), 0.0f, MAX_TEMP+(-MIN_TEMP)) / ((MAX_TEMP+(-MIN_TEMP))/1024) ) *3.0f, 0.0f, (1024.0f*3)-3); //Not having that second (float) might be a bug, and is definetely needed if min&max temps are less than 1024 apart
+						caddress = (int)restrict_flt((int)( restrict_flt((float)(parts[i].temp+(-MIN_TEMP)), 0.0f, 10000+(-MIN_TEMP)) / ((10000+(-MIN_TEMP))/1024) ) *3.0f, 0.0f, (1024.0f*3)-3); //Not having that second (float) might be a bug, and is definetely needed if min&max temps are less than 1024 apart
 					else
 						caddress = (int)restrict_flt((int)( restrict_flt((float)(parts[i].temp+(-lowesttemp)), 0.0f, (float)highesttemp+(-lowesttemp)) / ((float)(highesttemp+(-lowesttemp))/1024) ) *3.0f, 0.0f, (1024.0f*3)-3);
 					firea = 255;

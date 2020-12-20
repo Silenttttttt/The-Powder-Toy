@@ -2,10 +2,10 @@
 #define SIMULATIONDATA_H
 
 #define R_TEMP 22
-#define MAX_TEMP 999999
+#define MAX_TEMP 99999
 #define MIN_TEMP 0
-#define O_MAX_TEMP 3500
-#define O_MIN_TEMP -273
+#define O_MAX_TEMP 100272
+#define O_MIN_TEMP -273.15
 
 #define TYPE_PART			0x0000001 //1 Powders
 #define TYPE_LIQUID			0x0000002 //2 Liquids

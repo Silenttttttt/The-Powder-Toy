@@ -39,7 +39,7 @@ int FIRE_update(UPDATE_FUNC_ARGS)
 			}
 		}
 
-		if (blockpress >= 8)
+		if (blockpress >= 6)
 		{
 			sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 			sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
@@ -438,137 +438,107 @@ int FIRE_update(UPDATE_FUNC_ARGS)
 
 
 
-
-
-
-			case PT_OIL:
-				switch (RNG::Ref().between(2, 50))
-				{
-
-				case 8:
-
-					sim->part_change_type(i, x, y, PT_NBLE);
-					parts[i].ctype = PT_GAS;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 7:
-
-					sim->part_change_type(i, x, y, PT_WTRV);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-
-					break;
-				case 2:
-
-					sim->part_change_type(i, x, y, PT_N2);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 3:
-
-					sim->part_change_type(i, x, y, PT_CO);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 4:
-
-					sim->part_change_type(i, x, y, PT_CO2);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 5:
-
-					sim->part_change_type(i, x, y, PT_GAS);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 6:
-
-					sim->part_change_type(i, x, y, PT_BCOL);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-
-
-
-
-				default:
-					sim->part_change_type(i, x, y, PT_NONE);
-					break;
-				}
-
-
-
-				break;
-
-
+			case PT_POIL:
+			case PT_WAX:
+			case PT_MWAX:
+			case PT_BCOL:
+			case PT_DESL:
+			case PT_COAL:
 			case PT_GAS:
-				switch (RNG::Ref().between(2, 50))
+			case PT_OIL:
+				if (RNG::Ref().chance(1, 100))
 				{
-				case 7:
+					switch (RNG::Ref().between(2, 10))
+					{
 
-					sim->part_change_type(i, x, y, PT_WTRV);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
+					case 8:
+						if (RNG::Ref().chance(1, 20))
+						{
+							sim->part_change_type(i, x, y, PT_NBLE);
+							parts[i].ctype = PT_GAS;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+					
+					case 7:
+						if (RNG::Ref().chance(1, 5))
+						{
+							sim->part_change_type(i, x, y, PT_WTRV);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+					
+					case 2:
+						if (RNG::Ref().chance(1, 20))
+						{
+							sim->part_change_type(i, x, y, PT_N2);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+							
+						
+					case 3:
+						if (RNG::Ref().chance(1, 8))
+						{
+							sim->part_change_type(i, x, y, PT_CO);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+						
+					case 4:
+						if (RNG::Ref().chance(1, 5))
+						{
+							sim->part_change_type(i, x, y, PT_CO2);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+						
+					case 5:
+						if (RNG::Ref().chance(1, 5))
+						{
+							sim->part_change_type(i, x, y, PT_GAS);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+						
+					case 6:
+						if (RNG::Ref().chance(1, 5))
+						{
+							sim->part_change_type(i, x, y, PT_BCOL);
+							parts[i].ctype = PT_NONE;
+							parts[i].temp += RNG::Ref().between(1, 2);
+							parts[i].life += RNG::Ref().between(5, 10);
+							break;
+						}
+						
 
-					break;
-				case 2:
-
-					sim->part_change_type(i, x, y, PT_N2);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 3:
-
-					sim->part_change_type(i, x, y, PT_CO);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(10, 20);
-					break;
-				case 4:
-
-					sim->part_change_type(i, x, y, PT_CO2);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 5:
-
-					sim->part_change_type(i, x, y, PT_NBLE);
-					parts[i].ctype = PT_GAS;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
-				case 6:
-
-					sim->part_change_type(i, x, y, PT_BCOL);
-					parts[i].ctype = PT_NONE;
-					parts[i].temp += RNG::Ref().between(1, 2);
-					parts[i].life += RNG::Ref().between(5, 10);
-					break;
 
 
 
+					default:
+						sim->part_change_type(i, x, y, PT_NONE);
+						break;
+					}
+					
 
-
-
-				default:
-					sim->part_change_type(i, x, y, PT_NONE);
-					break;
 				}
-
-
-
+				sim->part_change_type(i, x, y, PT_NONE);
 				break;
+
+
+			
+					
 
 
 			case PT_H2:

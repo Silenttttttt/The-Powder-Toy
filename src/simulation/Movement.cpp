@@ -350,9 +350,9 @@ void Simulation::InitCanMove()
 	}
 	for (int movingType = 1; movingType < PT_NUM; movingType++)
 	{
-		//everything "swaps" with VACU and BHOL to make them eat things
-		can_move[movingType][PT_BHOL] = 1;
-		can_move[movingType][PT_NBHL] = 1;
+		//everything "swaps" with VACU and  to make them eat things
+	
+		can_move[movingType][PT_NBHL] = 0;
 		//nothing goes through stickmen
 		can_move[movingType][PT_STKM] = 0;
 		can_move[movingType][PT_STKM2] = 0;
@@ -789,10 +789,10 @@ int Simulation::TryMove(int i, int x, int y, int nx, int ny)
 		// Void ctype already checked in eval_move
 		part_kill(i);
 		return 0;
-	case PT_BHOL:
+	
 	case PT_NBHL:
 		// This is where blackhole eats particles
-		part_kill(i);
+		//part_kill(i);
 		if (!legacy_enable)
 		{
 			parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+parts[i].temp/2, MIN_TEMP, 10000);//3.0f;

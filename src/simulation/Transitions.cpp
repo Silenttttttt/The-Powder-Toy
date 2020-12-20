@@ -330,11 +330,7 @@ bool Simulation::TransferHeat(int i, int t, int surround[8])
 						{
 							t = parts[i].ctype;
 							parts[i].ctype = PT_NONE;
-							if (t == PT_THRM)
-							{
-								parts[i].tmp = 0;
-								t = PT_BMTL;
-							}
+							
 							if (t == PT_PLUT)
 							{
 								parts[i].tmp = 0;
@@ -395,7 +391,7 @@ bool Simulation::TransferHeat(int i, int t, int surround[8])
 					
 					else if (parts[i].ctype == PT_BMTL) parts[i].ctype = PT_FE;
 				
-				parts[i].life = RNG::Ref().between(240, 359);
+parts[i].life = RNG::Ref().between(240, 359);
 					
 				}
 			}
@@ -407,15 +403,11 @@ bool Simulation::TransferHeat(int i, int t, int surround[8])
 		if (t==PT_LAVA)
 		{
 			parts[i].life = (int)restrict_flt((parts[i].temp-700)/7, 0.0f, 400.0f);
-			if (parts[i].ctype==PT_THRM&&parts[i].tmp>0)
-			{
-				parts[i].tmp--;
-				parts[i].temp = 3500;
-			}
+			
 			if (parts[i].ctype==PT_PLUT&&parts[i].tmp>0)
 			{
 				parts[i].tmp--;
-				parts[i].temp = MAX_TEMP;
+				parts[i].temp = 10000;
 			}
 		}
 		return s == 1;

@@ -22,13 +22,21 @@
 
 int OIL_update(UPDATE_FUNC_ARGS)
 {
-
-
+	if (parts[i].temp >= 373.15 - (sim->air->pv[(y) / CELL][(x) / CELL]) && RNG::Ref().chance(1, 1000) || RNG::Ref().chance(1, 100000))
+	{
+		parts[i].type = PT_GAS;
+		parts[i].ctype = PT_OIL;
+	}
+	else if (parts[i].temp <= (RNG::Ref().between(5, 20) - 10) + (-23) + 273.15 + (sim->air->pv[(y) / CELL][(x) / CELL]) && RNG::Ref().chance(1, 1000))
+	{
+		parts[i].type = PT_WAX;
+		parts[i].ctype = PT_OIL;
+	}
 
 
 int temp = 0;
 int oxyposnum = 0;
-int oxypos[250][10] = { 0 };
+
 for (int rx = -2; rx <= 2; rx++)
 for (int ry = -2; ry <= 2; ry++)
 if (BOUNDS_CHECK && (rx || ry))
@@ -38,8 +46,7 @@ if (BOUNDS_CHECK && (rx || ry))
 	{
 		//	parts[i].containsoxy++;
 
-		oxypos[oxyposnum][0] = x + rx;
-		oxypos[oxyposnum][1] = y + ry;
+
 
 		if (!r)
 		{
@@ -85,14 +92,32 @@ if (BOUNDS_CHECK && (rx || ry))
 
 			if (RNG::Ref().chance(1, 10 - oxyposnum))
 			{
-				int tempctype = parts[i].ctype;
-				temp = RNG::Ref().between(1, oxyposnum) - 1;
-				sim->part_create(-1, oxypos[temp][0], oxypos[temp][1], PT_FIRE);
-				parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].ctype = tempctype;
-				parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].temp += 1 * oxyposnum;
-				parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].life = parts[i].life - RNG::Ref().between(50, 100);;
 
-				parts[i].life -= 1 * (oxyposnum / 2); 
+
+
+
+				float angle, magnitude;
+				int n, np;
+				
+				//for (n = 0; n < 2; n++)
+			////	{
+					np = sim->part_create(-3, x, y, PT_FIRE);
+					if (np > -1)
+					{
+						magnitude = RNG::Ref().between(40, 99) * 0.05f;
+						angle = RNG::Ref().between(0, 6283) * 0.001f; //(in radians, between 0 and 2*pi)
+						parts[np].vx = parts[i].vx * 0.5f + cosf(angle) * magnitude;
+						parts[np].vy = parts[i].vy * 0.5f + sinf(angle) * magnitude;
+				
+					//	parts[np].tmp2 = RNG::Ref().between(70, 109);
+						parts[np].life = RNG::Ref().between(30, 70);
+						parts[np].ctype = parts[i].type;
+						
+					}
+			//	}
+
+				parts[i].life -= 1 * (oxyposnum / 2);
+			
 			}
 		}
 		else
@@ -140,7 +165,7 @@ return 0;
 
 void OIL_create(ELEMENT_CREATE_FUNC_ARGS)
 {
-	parts[i].life = RNG::Ref().between(250, 450);
+	parts[i].life = RNG::Ref().between(150, 300);
 	//parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
 //	if (RNG::Ref().chance(1, 10))
 //	{
@@ -190,8 +215,8 @@ void OIL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HighPressureTransitionElement = NT;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
-	elem->HighTemperatureTransitionThreshold = 573.15f;
-	elem->HighTemperatureTransitionElement = PT_GAS;
+	elem->HighTemperatureTransitionThreshold = ITH;
+	elem->HighTemperatureTransitionElement = NT;
 
 	elem->Update = &OIL_update;
 	elem->Func_Create = &OIL_create;

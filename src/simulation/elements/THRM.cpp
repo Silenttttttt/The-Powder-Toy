@@ -35,7 +35,7 @@ int THRM_update(UPDATE_FUNC_ARGS)
 			}
 		}
 	}
-	if (blockpress >= 8)
+	if (blockpress >= 6)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
@@ -134,7 +134,7 @@ int THRM_update(UPDATE_FUNC_ARGS)
 		float angle, magnitude;
 		int tempelem = 0;
 		int n, np, randemb;
-		randemb = RNG::Ref().between(5, 25);
+		randemb = RNG::Ref().between(5, 20);
 		for (n = 0; n < randemb; n++)
 		{
 			np = sim->part_create(-3, x, y, PT_EMBR);
@@ -146,10 +146,11 @@ int THRM_update(UPDATE_FUNC_ARGS)
 				parts[np].vy = parts[i].vy * 0.5f + sinf(angle) * magnitude;
 				parts[np].tmp = 1;
 				parts[np].tmp2 = RNG::Ref().between(70, 109);
-				parts[np].temp = RNG::Ref().between(3000, 4000);
+				parts[np].temp = RNG::Ref().between(3300, 4300);
+				sim->air->pv[(y) / CELL][(x) / CELL] += 0.005f;
 			}
 		}
-		
+		sim->air->pv[(y) / CELL][(x) / CELL] += 0.025f; 
 
 
 		parts[i].temp += parts[i].tmp2;
@@ -243,7 +244,7 @@ void THRM_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Thermite. Burns at extremely high temperature.";
 
-	elem->Properties = TYPE_PART;
+	elem->Properties = TYPE_PART | PROP_CONDUCTS | PROP_HOT_GLOW;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;

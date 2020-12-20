@@ -17,6 +17,21 @@
 
 int WTRV_update(UPDATE_FUNC_ARGS)
 {
+
+	float limit = parts[i].temp / 50;
+	if (sim->air->pv[y / CELL][x / CELL] < limit)
+		sim->air->pv[y / CELL][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL]);
+	if (sim->air->pv[y / CELL + 1][x / CELL] < limit)
+		sim->air->pv[y / CELL + 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL]);
+	if (sim->air->pv[y / CELL - 1][x / CELL] < limit)
+		sim->air->pv[y / CELL - 1][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL]);
+
+	sim->air->pv[y / CELL][x / CELL + 1] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL + 1]);
+	sim->air->pv[y / CELL + 1][x / CELL + 1] += 0.001f * (limit - sim->air->pv[y / CELL + 1][x / CELL + 1]);
+	sim->air->pv[y / CELL][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL - 1]);
+	sim->air->pv[y / CELL - 1][x / CELL - 1] += 0.001f * (limit - sim->air->pv[y / CELL - 1][x / CELL - 1]);
+
+
 	int r, rx, ry;
 	for (rx=-1; rx<2; rx++)
 		for (ry=-1; ry<2; ry++)

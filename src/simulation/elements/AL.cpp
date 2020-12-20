@@ -62,7 +62,7 @@ void AL_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Aluminium powder. Generally used in thermite.?";
 
-	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_HOT_GLOW;
+	elem->Properties = TYPE_PART|PROP_CONDUCTS;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;

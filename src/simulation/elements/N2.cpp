@@ -99,7 +99,7 @@
 int N2_update(UPDATE_FUNC_ARGS)
 {
 	int r, rx, ry;
-	float limit = parts[i].temp / 20;
+	float limit = parts[i].temp / 100;
 	if (sim->air->pv[y / CELL][x / CELL] < limit)
 		sim->air->pv[y / CELL][x / CELL] += 0.001f * (limit - sim->air->pv[y / CELL][x / CELL]);
 	if (sim->air->pv[y / CELL + 1][x / CELL] < limit)

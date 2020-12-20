@@ -30,7 +30,7 @@ int FE_update(UPDATE_FUNC_ARGS)
 		}
 	}
 
-	if (blockpress >= 8)
+	if (blockpress >= 6)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
@@ -64,11 +64,15 @@ int FE_update(UPDATE_FUNC_ARGS)
 					if (RNG::Ref().chance(1, 250))
 						goto succ;
 					break;
+				case PT_FIRE:
+					if (RNG::Ref().chance(1, 100000 - parts[i].temp))
+					goto succ;
+					break;
 				case PT_LO2:
 					goto succ;
 					break;
 				case PT_NONE:
-					if (RNG::Ref().chance(1, 400000))
+					if (RNG::Ref().chance(1, 400000 - parts[i].temp))
 						goto succ;
 					break;
 				default:
@@ -91,7 +95,7 @@ int FE_update(UPDATE_FUNC_ARGS)
 					r = pmap[y + ry][x + rx];
 					if (!r)
 						continue;
-					if ((TYP(r) == PT_METL || TYP(r) == PT_FE) && RNG::Ref().chance(1, 100))
+					if (TYP(r) == PT_FE && RNG::Ref().chance(1, 100))
 					{
 						part_change_type(ID(r), x + rx, y + ry, PT_FEOX);
 						parts[ID(r)].tmp = (parts[i].tmp <= 7) ? parts[i].tmp = 1 : parts[i].tmp - RNG::Ref().between(0, 4);
@@ -143,12 +147,12 @@ void FE_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Iron metal. Rusts with salt, can be used for electrolysis of H2O.";
 
-	elem->Properties = TYPE_SOLID|PROP_CONDUCTS|PROP_LIFE_DEC|PROP_HOT_GLOW;
+	elem->Properties = TYPE_SOLID|PROP_CONDUCTS|PROP_HOT_GLOW;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
 	elem->HighPressureTransitionThreshold = 1.0f;
-	elem->HighPressureTransitionElement = ST;
+	elem->HighPressureTransitionElement = PT_BMTL;
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = 1538.0;

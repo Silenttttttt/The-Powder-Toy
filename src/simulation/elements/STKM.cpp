@@ -625,12 +625,13 @@ void STKM_ElementDataContainer::Interact(Simulation* sim, Stickman *playerp, int
 					playerp->spwn = 1;
 			}
 		}
+		
 
-		if ((TYP(r)==PT_BHOL || TYP(r)==PT_NBHL) && parts[i].type)
+		if (TYP(r)==PT_NBHL && parts[i].type)
 		{
 			if (!legacy_enable)
 			{
-				parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+parts[i].temp/2, MIN_TEMP, MAX_TEMP);
+				parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+parts[i].temp/2, MIN_TEMP, 10000);
 			}
 			sim->part_kill(i);
 		}

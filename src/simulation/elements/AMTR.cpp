@@ -27,7 +27,7 @@ int AMTR_update(UPDATE_FUNC_ARGS)
 				int rt = TYP(r);
 				// Would a table lookup be faster than 11 checks?
 				if (rt != PT_AMTR && !(sim->elements[rt].Properties&PROP_INDESTRUCTIBLE) && !(sim->elements[rt].Properties&PROP_CLONE)
-				        && rt != PT_NONE && rt != PT_VOID && rt != PT_BHOL && rt != PT_NBHL && rt != PT_PRTI && rt != PT_PRTO)
+				        && rt != PT_NONE && rt != PT_VOID && rt != PT_NBHL && rt != PT_PRTI && rt != PT_PRTO)
 				{
 #ifndef NOMOD
 					if (rt == PT_PPTI || rt == PT_PPTO)

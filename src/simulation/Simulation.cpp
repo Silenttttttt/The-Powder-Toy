@@ -1290,7 +1290,7 @@ void Simulation::UpdateBefore()
 	}
 
 	//check for excessive stacked particles, create BHOL if found
-	if (forceStackingCheck || RNG::Ref().chance(1, 10))
+	/*if (forceStackingCheck || RNG::Ref().chance(1, 10))
 	{
 		bool excessiveStackingFound = false;
 		forceStackingCheck = 0;
@@ -1351,7 +1351,7 @@ void Simulation::UpdateBefore()
 				}
 			}
 		}
-	}
+	}*/
 
 	// For elements with extra data, run special update functions
 	// This does things like LIFE recalculation and LOLZ patterns
@@ -1789,18 +1789,18 @@ bool Simulation::UpdateParticle(int i)
 				if (RNG::Ref().chance(1, 2))
 				{
 					part_create(i, x, y, PT_BOMB);
-					parts[i].temp = MAX_TEMP;
+					parts[i].temp = 10000;
 				}
 				else
 				{
 					part_create(i, x, y, PT_PLSM);
-					parts[i].temp = MAX_TEMP;
+					parts[i].temp = 10000;
 				}
 			}
 			else
 			{
 				part_create(i, x, y, PT_EMBR);
-				parts[i].temp = MAX_TEMP;
+				parts[i].temp = 10000;
 				parts[i].vx = RNG::Ref().between(-10, 10);
 				parts[i].vy = RNG::Ref().between(-10, 10);
 			}
@@ -3095,12 +3095,48 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 		parts[ID(thisPart)].y = newY;
 		return -1;
 	}
+	else if (tool == TOOL_SMIX)
+	{
+		int thisPart = pmap[y][x];
+		if (!thisPart)
+			return 0;
+
+		if (RNG::Ref().chance(1, 100))
+			return 0;
+
+		int distance = (int)(std::pow(strength, .10f) * 10);
+
+		if (!(elements[TYP(thisPart)].Properties & (TYPE_PART | TYPE_LIQUID | TYPE_GAS)))
+			return 0;
+
+		int newX = x + RNG::Ref().between(0, distance - 1) - (distance / 2);
+		int newY = y + RNG::Ref().between(0, distance - 1) - (distance / 2);
+
+		if (newX < 0 || newY < 0 || newX >= XRES || newY >= YRES)
+			return 0;
+
+		int thatPart = pmap[newY][newX];
+		if (!thatPart)
+			return 0;
+
+		if ((elements[TYP(thisPart)].Properties & STATE_FLAGS) != (elements[TYP(thatPart)].Properties & STATE_FLAGS))
+			return 0;
+
+		pmap[y][x] = thatPart;
+		parts[ID(thatPart)].x = x;
+		parts[ID(thatPart)].y = y;
+
+		pmap[newY][newX] = thisPart;
+		parts[ID(thisPart)].x = newX;
+		parts[ID(thisPart)].y = newY;
+		return -1;
+	}
 	else if (tool == TOOL_CYCL)
 	{
-		/* 
+		
 			Air velocity calculation.
 			(x, y) -- turn 90 deg -> (-y, x)
-		*/
+		
 		// only trigger once per cell (less laggy)
 		if ((x%CELL) == 0 && (y%CELL) == 0 && !(brushX == x && brushY == y))
 		{

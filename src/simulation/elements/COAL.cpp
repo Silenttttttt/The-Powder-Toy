@@ -34,7 +34,7 @@ int COAL_update(UPDATE_FUNC_ARGS)
 		}
 	}
 
-	if (blockpress >= 8)
+	if (blockpress >= 6)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
@@ -89,7 +89,7 @@ int COAL_update(UPDATE_FUNC_ARGS)
 				int rt = TYP(r);
 
 
-				if (rt != parts[i].type && abs(parts[i].vx) > 10)
+				/*if (rt != parts[i].type && abs(parts[i].vx) > 10)
 				{
 					sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vx) / 5;
 					parts[i].vx /= 2;
@@ -98,7 +98,7 @@ int COAL_update(UPDATE_FUNC_ARGS)
 				{
 					sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vy) / 5;
 					parts[i].vy /= 2;
-				}
+				}*/
 				if ((RNG::Ref().chance(1, 10) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > 350 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 2) || rt == PT_FIRE || rt == PT_PLSM))
 				{
 

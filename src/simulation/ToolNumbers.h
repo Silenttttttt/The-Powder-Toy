@@ -14,7 +14,9 @@
 #define TOOL_WIND	8
 #define TOOL_PROP	9
 #define TOOL_SIGN	10
-#define TOOLCOUNT	11
+#define TOOL_SMIX	11
+#define TOOLCOUNT	12
+
 
 #define OLD_PT_WIND	147
 #define OLD_WL_SIGN	126
@@ -39,6 +41,7 @@ static toolType toolTypes[] =
 	{"PGRV", "DEFAULT_TOOL_PGRV",	COLPACK(0xCCCCFF), "Creates a short-lasting gravity well."},
 	{"NGRV", "DEFAULT_TOOL_NGRV",	COLPACK(0xAACCFF), "Creates a short-lasting negative gravity well."},
 	{"MIX",	 "DEFAULT_TOOL_MIX",	COLPACK(0xFFD090), "Mixes particles around randomly."},
+	{"SMIX", "DEFAULT_TOOL_SMIX",	COLPACK(0xFDDF90), "Super mixes everything mixing gasses, liquids and powders."},
 	{"CYCL", "DEFAULT_TOOL_CYCL",	COLPACK(0x132F5B), "Cyclone, produces swirling air currents."},
 	{"WIND", "DEFAULT_UI_WIND",		COLPACK(0x404040), "Creates air movement."},
 	{"PROP", "DEFAULT_UI_PROPERTY",	COLPACK(0xFFAA00), "Property drawing tool."},

@@ -25,7 +25,7 @@ int ACID_update(UPDATE_FUNC_ARGS)
 				if (!r)
 					continue;
 				int rt = TYP(r);
-				if (rt != PT_ACID && rt != PT_CAUS)
+				if (rt != PT_ACID && rt != PT_CAUS && !parts[i].ctype)
 				{
 					if (rt  == PT_PLEX || rt == PT_NITR || rt == PT_GUNP || rt == PT_RBDM || rt == PT_LRBD)
 					{
@@ -54,6 +54,7 @@ int ACID_update(UPDATE_FUNC_ARGS)
 								newtemp = 0;
 							parts[i].temp += newtemp;
 							parts[i].life--;
+							parts[i].ctype = parts[ID(r)].ctype;
 							sim->part_kill(ID(r));
 						}
 					}
@@ -128,7 +129,7 @@ void ACID_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->HotAir = 0.000f	* CFDS;
 	elem->Falldown = 2;
 
-	elem->Flammable = 40;
+	elem->Flammable = 0;
 	elem->Explosive = 0;
 	elem->Meltable = 0;
 	elem->Hardness = 0;
@@ -140,7 +141,7 @@ void ACID_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Dissolves almost everything.";
 
-	elem->Properties = TYPE_LIQUID|PROP_DEADLY;
+	elem->Properties = TYPE_LIQUID;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;

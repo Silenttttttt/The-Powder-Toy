@@ -48,7 +48,7 @@ int BMTL_update(UPDATE_FUNC_ARGS)
 
 
 
-					if (rt != parts[i].type && abs(parts[i].vx) > 10)
+					/*if (rt != parts[i].type && abs(parts[i].vx) > 10)
 					{
 						sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vx) / 2;
 						parts[i].vx /= 2.5;
@@ -57,7 +57,7 @@ int BMTL_update(UPDATE_FUNC_ARGS)
 					{
 						sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vy) / 2;
 						parts[i].vy /= 2.5;
-					}
+					}*/
 
 
 

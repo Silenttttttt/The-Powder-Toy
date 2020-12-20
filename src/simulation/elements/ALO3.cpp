@@ -36,26 +36,26 @@ int ALO3_update(UPDATE_FUNC_ARGS)
 
 
 
-	if (abs(parts[i].vx) > 20)
-	{
-		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 2;
-	//	if (parts[i].vx > 0)
-	//	{
-			parts[i].vx /= 3;
-		//}
-	//	else 
-	//	{
+	//if (abs(parts[i].vx) > 20)
+	//{
+	//	sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 2;
+	////	if (parts[i].vx > 0)
+	////	{
+	//		parts[i].vx /= 3;
+	//	//}
+	////	else 
+	////	{
 
-		//}
+	//	//}
 
-	}
-	if (abs(parts[i].vy) > 20)
-	{
-		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 2;
+	//}
+	//if (abs(parts[i].vy) > 20)
+	//{
+	//	sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 2;
 
 
-		parts[i].vy /= 3;
-	}
+	//	parts[i].vy /= 3;
+	//}
 
 
 
@@ -99,7 +99,7 @@ void ALO3_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Latent = 0;
 	elem->Description = "Aluminium oxide (Al2O3). Commonly called alumina, high melting point";
 
-	elem->Properties = TYPE_PART|PROP_CONDUCTS|PROP_HOT_GLOW;
+	elem->Properties = TYPE_PART|PROP_HOT_GLOW;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
@@ -108,7 +108,7 @@ void ALO3_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowTemperatureTransitionThreshold = ITL;
 	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = 2072 + 273.15;
-	elem->HighTemperatureTransitionElement = ST;
+	elem->HighTemperatureTransitionElement = PT_LAVA;
 
 	elem->Update = &ALO3_update;
 	elem->Graphics = &COAL_graphics;

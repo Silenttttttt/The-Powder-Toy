@@ -24,7 +24,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 
 
 
-	if (abs(parts[i].vx) > 10)
+	/*if (abs(parts[i].vx) > 10)
 	{
 		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vx) / 10;
 
@@ -32,7 +32,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 	if (abs(parts[i].vy) > 10)
 	{
 		sim->air->pv[y / CELL][x / CELL] += abs(parts[i].vy) / 10;
-	}
+	}*/
 
 
 
@@ -45,7 +45,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 
 	int temp = 0;
 	int oxyposnum = 0;
-	int oxypos[250][10] = { 0 };
+
 	for (int rx = -2; rx <= 2; rx++)
 		for (int ry = -2; ry <= 2; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
@@ -55,8 +55,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 				{
 					//	parts[i].containsoxy++;
 
-					oxypos[oxyposnum][0] = x + rx;
-					oxypos[oxyposnum][1] = y + ry;
+				
 
 					if (!r)
 					{
@@ -90,7 +89,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 				int rt = TYP(r);
 
 
-				if (rt != parts[i].type && abs(parts[i].vx) > 10)
+				/*if (rt != parts[i].type && abs(parts[i].vx) > 10)
 				{
 					sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vx) / 5;
 					parts[i].vx /= 2;
@@ -99,7 +98,7 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 				{
 					sim->air->pv[(y) / CELL][(x) / CELL] += abs(parts[i].vy) / 5;
 					parts[i].vy /= 2;
-				}
+				}*/
 				if ((RNG::Ref().chance(1, 10) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > 350 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 2) || rt == PT_FIRE  || rt == PT_PLSM))
 				{
 
@@ -114,12 +113,26 @@ int BCOL_update(UPDATE_FUNC_ARGS)
 
 						if (RNG::Ref().chance(1, 10 - oxyposnum))
 						{
-							int tempctype = parts[i].ctype;
-							temp = RNG::Ref().between(1, oxyposnum) - 1;
-							sim->part_create(-1, oxypos[temp][0], oxypos[temp][1], PT_FIRE);
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].ctype = tempctype;
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].temp += 1 * oxyposnum;
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].life = parts[i].life - RNG::Ref().between(50, 100);;
+						
+							float angle, magnitude;
+							int n, np;
+
+							//for (n = 0; n < 2; n++)
+							// {
+								np = sim->part_create(-3, x, y, PT_FIRE);
+								if (np > -1)
+								{
+									magnitude = RNG::Ref().between(40, 99) * 0.05f;
+									angle = RNG::Ref().between(0, 6283) * 0.001f; //(in radians, between 0 and 2*pi)
+									parts[np].vx = parts[i].vx * 0.5f + cosf(angle) * magnitude;
+									parts[np].vy = parts[i].vy * 0.5f + sinf(angle) * magnitude;
+									parts[np].tmp = 1;
+									//	parts[np].tmp2 = RNG::Ref().between(70, 109);
+									parts[np].life = RNG::Ref().between(50, 100);
+									parts[np].ctype = parts[i].type;
+									 
+								}
+							//}
 
 							parts[i].life -= 1 * (oxyposnum / 2);
 						}

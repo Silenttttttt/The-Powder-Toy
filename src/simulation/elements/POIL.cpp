@@ -14,10 +14,25 @@
  */
 
 #include "simulation/ElementsCommon.h"
-
-int WATR_update(UPDATE_FUNC_ARGS)
+//int COAL_graphics(GRAPHICS_FUNC_ARGS);
+int POIL_update(UPDATE_FUNC_ARGS)
 {
-	int r, rx, ry;
+
+	if (parts[i].temp >= 373.15 - (sim->air->pv[(y) / CELL][(x) / CELL]) && RNG::Ref().chance(1, 1000) || RNG::Ref().chance(1, 100000))
+	{
+		parts[i].type = PT_GAS;
+		parts[i].ctype = PT_POIL;
+	}
+	else if (parts[i].temp <= (RNG::Ref().between(5, 20)) - 273.15 + (sim->air->pv[(y) / CELL][(x) / CELL]) && RNG::Ref().chance(1, 1000) || RNG::Ref().chance(1, 100000))
+	{
+		parts[i].type = PT_WAX;
+		parts[i].ctype = PT_POIL;
+	}
+
+
+
+
+	/*int r, rx, ry;
 	for (rx=-1; rx<2; rx++)
 		for (ry=-1; ry<2; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
@@ -51,20 +66,28 @@ int WATR_update(UPDATE_FUNC_ARGS)
 				{
 					part_change_type(i,x,y,PT_SLTW);
 				}
-				/*if (TYP(r)==PT_CNCT && RNG::Ref().chance(1, 100))	Concrete+Water to paste, not very popular
+				if (TYP(r)==PT_CNCT && RNG::Ref().chance(1, 100))	Concrete+Water to paste, not very popular
 				{
 					part_change_type(i,x,y,PT_PSTE);
 					kill_part(ID(r));
-				}*/
-			}
+				}
+			}*/
 	return 0;
 }
-
-void WATR_init_element(ELEMENT_INIT_FUNC_ARGS)
+void POIL_create(ELEMENT_CREATE_FUNC_ARGS)
 {
-	elem->Identifier = "DEFAULT_PT_WATR";
-	elem->Name = "WATR";
-	elem->Colour = COLPACK(0x2030D0);
+	parts[i].life = RNG::Ref().between(100, 200);
+	//parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
+//	if (RNG::Ref().chance(1, 10))
+//	{
+		//parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
+	//}
+}
+void POIL_init_element(ELEMENT_INIT_FUNC_ARGS)
+{
+	elem->Identifier = "DEFAULT_PT_POOP";
+	elem->Name = "POIL";
+	elem->Colour = COLPACK(0x4f5268);
 	elem->MenuVisible = 1;
 	elem->MenuSection = SC_LIQUID;
 	elem->Enabled = 1;
@@ -84,25 +107,26 @@ void WATR_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->Meltable = 0;
 	elem->Hardness = 20;
 
-	elem->Weight = (int)(1 * 20.0);
+	elem->Weight = (int)(1.2 * 20.0);
 
 	elem->DefaultProperties.temp = R_TEMP - 2.0f + 273.15f;
 	elem->HeatConduct = 29;
-	elem->Latent = 7500;
-	elem->Description = "Water. Conducts electricity, freezes, and extinguishes fires.";
+	elem->Latent = 10000;
+	elem->Description = "Crude oil. A fossil fuel, like coal and natural gas. Formed from the remains of ancient marine organisms.";
 
-	elem->Properties = TYPE_LIQUID|PROP_CONDUCTS|PROP_LIFE_DEC|PROP_NEUTPASS;
+	elem->Properties = TYPE_LIQUID|PROP_CONDUCTS|PROP_NEUTPASS;
 
 	elem->LowPressureTransitionThreshold = IPL;
 	elem->LowPressureTransitionElement = NT;
 	elem->HighPressureTransitionThreshold = IPH;
 	elem->HighPressureTransitionElement = NT;
-	elem->LowTemperatureTransitionThreshold = 273.15f;
-	elem->LowTemperatureTransitionElement = PT_ICEI;
-	elem->HighTemperatureTransitionThreshold = 373.0f;
-	elem->HighTemperatureTransitionElement = PT_WTRV;
+	elem->LowTemperatureTransitionThreshold = ITL;
+	elem->LowTemperatureTransitionElement = NT;
+	elem->HighTemperatureTransitionThreshold = ITH;
+	elem->HighTemperatureTransitionElement = NT;
 
-	elem->Update = &WATR_update;
-	elem->Graphics = NULL;
-	elem->Init = &WATR_init_element;
+	elem->Update = &POIL_update;
+	//elem->Graphics = &COAL_graphics;
+	elem->Func_Create = &POIL_create;
+	elem->Init = &POIL_init_element;
 }

@@ -22,7 +22,18 @@
 
 int GAS_update(UPDATE_FUNC_ARGS)
 {
-
+	if (parts[i].temp <= 283.15 + (sim->air->pv[(y) / CELL][(x) / CELL]) && RNG::Ref().chance(1, 1000) || RNG::Ref().chance(1, 100000))
+	{
+		if (parts[i].ctype)
+		{
+			parts[i].type = parts[i].ctype;
+		}
+		else
+		{
+			parts[i].type = PT_OIL;
+		}
+		
+	}
 	int blockpress = 0;
 	for (int nx = -2; nx <= 2; nx++)
 	{
@@ -36,7 +47,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 		}
 	}
 
-	if (blockpress >= 8)
+	if (blockpress >= 6)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
@@ -58,7 +69,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 
 	int temp = 0;
 	int oxyposnum = 0;
-	int oxypos[250][10] = { 0 };
+	
 	for (int rx = -2; rx <= 2; rx++)
 		for (int ry = -2; ry <= 2; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
@@ -68,9 +79,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 				{
 					//	parts[i].containsoxy++;
 
-					oxypos[oxyposnum][0] = x + rx;
-					oxypos[oxyposnum][1] = y + ry;
-
+					
 					if (!r)
 					{
 						oxyposnum++;
@@ -115,13 +124,34 @@ int GAS_update(UPDATE_FUNC_ARGS)
 
 						if (RNG::Ref().chance(1, 10 - oxyposnum))
 						{
-							int tempctype = parts[i].ctype;
-							temp = RNG::Ref().between(1, oxyposnum) - 1;
-							sim->part_create(-1, oxypos[temp][0], oxypos[temp][1], PT_FIRE);
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].ctype = tempctype;
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].temp += 1 * oxyposnum;
-							parts[ID(pmap[oxypos[temp][0]][oxypos[temp][1]])].life = parts[i].life - RNG::Ref().between(50, 100);;
+							float angle, magnitude;
+							int n, np;
 
+						//	for (n = 0; n < 2; n++)
+						//	{
+								np = sim->part_create(-3, x, y, PT_FIRE);
+								if (np > -1)
+								{
+									magnitude = RNG::Ref().between(40, 99) * 0.05f;
+									angle = RNG::Ref().between(0, 6283) * 0.001f; //(in radians, between 0 and 2*pi)
+									parts[np].vx = parts[i].vx * 0.5f + cosf(angle) * magnitude;
+									parts[np].vy = parts[i].vy * 0.5f + sinf(angle) * magnitude;
+								
+									//	parts[np].tmp2 = RNG::Ref().between(70, 109);
+									parts[np].life = RNG::Ref().between(50, 100);
+									if (parts[i].ctype)
+									{
+										parts[np].ctype = parts[i].ctype;
+									}
+									else 
+									{
+
+										parts[np].ctype = parts[i].ctype;
+									}
+									
+
+								}
+						//	}
 							parts[i].life -= 1 * (oxyposnum / 2);
 						}
 					}
@@ -154,14 +184,24 @@ int GAS_update(UPDATE_FUNC_ARGS)
 			}
 	if (parts[i].life <= 0)
 	{
-		int temp = parts[i].type;
+		if (parts[i].ctype)
+		{
+			int temp = parts[i].ctype = parts[i].ctype;
+		}
+		else
+		{
+
+			int temp = parts[i].ctype;
+		}
 		//int templife = parts[i].life;
 		sim->part_change_type(i, x, y, PT_FIRE);
+		
+		
 		parts[i].ctype = temp;
 		parts[i].life = RNG::Ref().between(30, 50);//templife;
 		return 1;
 	}
-
+	
 
 	return 0;
 }
@@ -171,10 +211,9 @@ int GAS_update(UPDATE_FUNC_ARGS)
 
 void GAS_create(ELEMENT_CREATE_FUNC_ARGS)
 {
-	if (parts[i].life == 0)
-	{
-		parts[i].life = RNG::Ref().between(250, 350);
-	}
+	
+		parts[i].life = RNG::Ref().between(100, 200);
+	
 //	parts[i].containsoxy = RNG::Ref().between(1, 2) - 1;
 	if (RNG::Ref().chance(1, 10))
 	{
@@ -202,7 +241,7 @@ void GAS_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->AirLoss = 0.99f;
 	elem->Loss = 0.30f;
 	elem->Collision = -0.1f;
-	elem->Gravity = 0.0f;
+	elem->Gravity = 0.01f;
 	elem->Diffusion = 0.75f;
 	elem->HotAir = 0.001f	* CFDS;
 	elem->Falldown = 0;
@@ -225,8 +264,8 @@ void GAS_init_element(ELEMENT_INIT_FUNC_ARGS)
 	elem->LowPressureTransitionElement = NT;
 	elem->HighPressureTransitionThreshold = IPH;
 	elem->HighPressureTransitionElement = NT;
-	elem->LowTemperatureTransitionThreshold = 283.15f;
-	elem->LowTemperatureTransitionElement = PT_OIL;
+	elem->LowTemperatureTransitionThreshold = ITL;
+	elem->LowTemperatureTransitionElement = NT;
 	elem->HighTemperatureTransitionThreshold = ITH;
 	elem->HighTemperatureTransitionElement = NT;
 

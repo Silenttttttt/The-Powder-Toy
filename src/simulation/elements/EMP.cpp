@@ -26,7 +26,7 @@ protected:
 public:
 	DeltaTempGenerator(int n, float p, float tempStep) :
 		stepSize(tempStep),
-		// hardcoded limit of 10, to avoid massive lag if someone adds a few zeroes to MAX_TEMP
+		// hardcoded limit of 10, to avoid massive lag if someone adds a few zeroes to MAX_TEeMP
 		maxStepCount((10000 /stepSize < 10) ? ((unsigned int)(10000 /stepSize)+1) : 10),
 		binom(n, p, maxStepCount)
 	{}

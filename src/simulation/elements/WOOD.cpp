@@ -32,7 +32,7 @@ int WOOD_update(UPDATE_FUNC_ARGS)
 		}
 	}
 
-	if (blockpress >= 8)
+	if (blockpress >= 6)
 	{
 		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;

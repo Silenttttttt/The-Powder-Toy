@@ -78,7 +78,7 @@ int create_LIGH(Simulation *sim, int x, int y, int c, int temp, int life, int tm
 	else if (x >= 0 && x < XRES && y >= 0 && y < YRES)
 	{
 		int r = pmap[y][x];
-		if (((TYP(r)==PT_VOID || (TYP(r)==PT_PVOD && parts[ID(r)].life >= 10)) && (!parts[ID(r)].ctype || (parts[ID(r)].ctype==c)!=(parts[ID(r)].tmp&1))) || TYP(r)==PT_BHOL || TYP(r)==PT_NBHL) // VOID, PVOD, VACU, and BHOL eat LIGH here
+		if (((TYP(r)==PT_VOID || (TYP(r)==PT_PVOD && parts[ID(r)].life >= 10)) && (!parts[ID(r)].ctype || (parts[ID(r)].ctype==c)!=(parts[ID(r)].tmp&1)))  || TYP(r)==PT_NBHL) // VOID, PVOD, VACU, and eat LIGH here
 			return 1;
 	}
 	else
@@ -176,11 +176,11 @@ int LIGH_update(UPDATE_FUNC_ARGS)
 	if (aheat_enable)
 	{
 		sim->air->hv[y/CELL][x/CELL] += powderful/50;
-		if (sim->air->hv[y/CELL][x/CELL] > MAX_TEMP)
-			sim->air->hv[y/CELL][x/CELL] = MAX_TEMP;
+		if (sim->air->hv[y/CELL][x/CELL] > 10000)
+			sim->air->hv[y/CELL][x/CELL] = 10000;
 		// If the LIGH was so powerful that it overflowed hv, set to max temp
 		else if (sim->air->hv[y/CELL][x/CELL] < 0)
-			sim->air->hv[y/CELL][x/CELL] = MAX_TEMP;
+			sim->air->hv[y/CELL][x/CELL] = 10000;
 	}
 
 	for (rx=-2; rx<3; rx++)
@@ -195,7 +195,7 @@ int LIGH_update(UPDATE_FUNC_ARGS)
 				if (sim->elements[rt].Properties & PROP_INDESTRUCTIBLE)
 				{
 					if (sim->elements[rt].HeatConduct)
-						parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, MAX_TEMP);
+						parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, 10000);
 					continue;
 				}
 				switch (rt)
@@ -206,12 +206,12 @@ int LIGH_update(UPDATE_FUNC_ARGS)
 				case PT_THDR:
 				case PT_CLNE:
 				case PT_FIRE:
-					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, MAX_TEMP);
+					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, 10000);
 					continue;
 				case PT_DEUT:
 				case PT_PLUT:
 					//start nuclear reactions
-					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful, MIN_TEMP, MAX_TEMP);
+					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful, MIN_TEMP, 10000);
 					sim->air->pv[y/CELL][x/CELL] += powderful/35;
 					if (RNG::Ref().chance(1, 3))
 					{
@@ -236,7 +236,7 @@ int LIGH_update(UPDATE_FUNC_ARGS)
 						parts[ID(r)].life -= powderful/100;
 					break;
 				case PT_HEAC:
-					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, MAX_TEMP);
+					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/10, MIN_TEMP, 10000);
 					if (parts[ID(r)].temp > sim->elements[PT_HEAC].HighTemperatureTransitionThreshold)
 					{
 						sim->part_change_type(ID(r), x+rx, y+ry, PT_LAVA);
@@ -252,7 +252,7 @@ int LIGH_update(UPDATE_FUNC_ARGS)
 				}
 				sim->air->pv[y/CELL][x/CELL] += powderful/400;
 				if (sim->elements[rt].HeatConduct)
-					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/1.3f, MIN_TEMP, MAX_TEMP);
+					parts[ID(r)].temp = restrict_flt(parts[ID(r)].temp+powderful/1.3f, MIN_TEMP, 10000);
 			}
 	if (parts[i].tmp2 == 3)
 	{
