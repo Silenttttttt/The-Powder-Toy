@@ -36,8 +36,8 @@ int THRM_update(UPDATE_FUNC_ARGS)
 		}
 	}
 	if (blockpress >= 6)
-	{
-		sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
+	{	
+	sim->air->bmap_blockair[y / CELL][x / CELL] = 1;
 		sim->air->bmap_blockairh[y / CELL][x / CELL] = 0x8;
 	}
 
@@ -134,6 +134,8 @@ int THRM_update(UPDATE_FUNC_ARGS)
 		float angle, magnitude;
 		int tempelem = 0;
 		int n, np, randemb;
+		ARGBColour col = COLPACK(0xFFA953);
+		
 		randemb = RNG::Ref().between(5, 20);
 		for (n = 0; n < randemb; n++)
 		{
@@ -147,6 +149,7 @@ int THRM_update(UPDATE_FUNC_ARGS)
 				parts[np].tmp = 1;
 				parts[np].tmp2 = RNG::Ref().between(70, 109);
 				parts[np].temp = RNG::Ref().between(3300, 4300);
+				parts[np].dcolour = col;
 				sim->air->pv[(y) / CELL][(x) / CELL] += 0.005f;
 			}
 		}

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef LEGACY_CONSOLE_H
+#define LEGACY_CONSOLE_H
 
 #include <defines.h>
 #include <graphics/Pixel.h>
