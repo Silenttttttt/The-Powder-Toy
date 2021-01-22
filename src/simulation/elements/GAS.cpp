@@ -110,7 +110,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 
 				//continue;
 				int rt = TYP(r);
-				if ((RNG::Ref().chance(1, 5) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > 350 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5) || rt == PT_FIRE || rt == PT_PLSM))
+				if ((RNG::Ref().chance(1, 5) && parts[i].life > 0) && (parts[i].containsoxy > 0 || oxyposnum > 0) && (parts[i].temp > (350 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5)) || rt == PT_FIRE || rt == PT_PLSM))
 				{
 
 					if (oxyposnum > 0 && oxyposnum < 10)
@@ -166,7 +166,7 @@ int GAS_update(UPDATE_FUNC_ARGS)
 					}
 				}
 
-				else if (RNG::Ref().chance(1, 5) && parts[i].life > 0 && parts[i].containsoxy <= 0 && (parts[i].temp > 250 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5) || rt == PT_FIRE || rt == PT_PLSM || rt == PT_EMBR))
+				else if (RNG::Ref().chance(1, 5) && parts[i].life > 0 && parts[i].containsoxy <= 0 && (parts[i].temp > (250 + 273 - (sim->air->pv[(y) / CELL][(x) / CELL] / 1.5)) || rt == PT_FIRE || rt == PT_PLSM || rt == PT_EMBR))
 				{
 
 					//parts[i].life--;

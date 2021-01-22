@@ -3095,7 +3095,7 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 		parts[ID(thisPart)].y = newY;
 		return -1;
 	}
-	else if (tool == TOOL_SMIX)
+	/*else if (tool == TOOL_SMIX)
 	{
 		int thisPart = pmap[y][x];
 		if (!thisPart)
@@ -3130,14 +3130,17 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 		parts[ID(thisPart)].x = newX;
 		parts[ID(thisPart)].y = newY;
 		return -1;
-	}
+	}*/
 	else if (tool == TOOL_CYCL)
 	{
-		
-			Air velocity calculation.
-			(x, y) -- turn 90 deg -> (-y, x)
+		/*
+		Air velocity calculation.(x, y) 
+			
+			//-- turn 90 deg -> (-y, x)
 		
 		// only trigger once per cell (less laggy)
+
+			*/
 		if ((x%CELL) == 0 && (y%CELL) == 0 && !(brushX == x && brushY == y))
 		{
 			float *vx = &air->vx[y/CELL][x/CELL];
@@ -3151,14 +3154,14 @@ int Simulation::CreateTool(int x, int y, int brushX, int brushY, int tool, float
 			*vy -= (strength / 16) * dvx * invsqr;
 
 			// Clamp velocities
-			if (*vx > 256.0f)
-				*vx = 256.0f;
-			else if (*vx < -256.0f)
-				*vx = -256.0f;
-			if (*vy > 256.0f)
-				*vy = 256.0f;
-			else if (*vy < -256.0f)
-				*vy = -256.0f;
+			if (*vx > 1256.0f)
+				*vx = 1256.0f;
+			else if (*vx < -1256.0f)
+				*vx = -1256.0f;
+			if (*vy > 1256.0f)
+				*vy = 1256.0f;
+			else if (*vy < -1256.0f)
+				*vy = -1256.0f;
 		}
 		return -1;
 	}
