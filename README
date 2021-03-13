@@ -4,7 +4,7 @@ This is my second attempt at making a tpt mod
 
 I updated a lot of stuff, it's hard to update and label everything that I do lol
 
-
+Replaced vanilla combustion system with a very unoptimized one that checks for "air" and uses the firework code to make fire.
 
 
 
